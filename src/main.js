@@ -15,14 +15,20 @@ Vue.use(Vuetify, {
     error: "#f44336",
     warning: "#ffeb3b",
     info: "#2196f3",
-    success: "#4caf50"
+    success: "#4caf50",
+    facebook: "#3B5998",
+    google: "#db3236",
+    textBox: "#000000",
+    b: "#FFFFFF"
   }
 })
 
 Vue.config.productionTip = false
 
 const unsubscribe = firebase.auth()
+
 .onAuthStateChanged((firebaseUser) => {
+  console.log("User Changes")
   new Vue({
     el: '#app',
     router,

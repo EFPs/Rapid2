@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import firebase from '@/firebase'
+// import firebase from '@/firebase'
 import router from '@/router'
+import {auth, db} from '../firebase'
 
 Vue.use(Vuex)
 
@@ -26,12 +27,14 @@ export const store = new Vuex.Store({
   actions: {
     userSignUp ({commit}, payload) {
       commit('setLoading', true)
-      firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
+      auth.createUserWithEmailAndPassword(payload.email, payload.password)
       .then(firebaseUser => {
         commit('setUser', {email: firebaseUser.email})
+        db.ref('users/' + payload.sid).push({ sid: payload.sid, email: payload.email, firstName: payload.firstName, lastName: payload.lastName, major: payload.major })
         commit('setLoading', false)
         router.push('/home')
-      })
+      }).then(() => { console.log('Current User ', auth.currentUser) })
+        // .then(() => { db.ref('users/' + payload.sid).push({ sid: payload.sid, email: payload.email, firstName: payload.firstName, lastName: payload.lastName, major: payload.major }) })
       .catch(error => {
         commit('setError', error.message)
         commit('setLoading', false)
@@ -39,7 +42,7 @@ export const store = new Vuex.Store({
     },
     userSignIn ({commit}, payload) {
       commit('setLoading', true)
-      firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
+      auth.signInWithEmailAndPassword(payload.email, payload.password)
       .then(firebaseUser => {
         commit('setUser', {email: firebaseUser.email})
         commit('setLoading', false)
@@ -55,9 +58,13 @@ export const store = new Vuex.Store({
       commit('setUser', {email: payload.email})
     },
     userSignOut ({commit}) {
-      firebase.auth().signOut()
+      auth.signOut()
       commit('setUser', null)
       router.push('/')
+    },
+    socialMediaSignUp ({commit}, payload) {
+      commit('setUser', payload)
+      router.push('/home')
     }
   },
   getters: {

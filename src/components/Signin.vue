@@ -33,14 +33,21 @@
             <v-flex class="text-xs-center" mt-5>
               <v-btn color="primary" type="submit">Sign In</v-btn>
             </v-flex>
+
           </v-layout>
         </form>
+      </v-flex>
+      <v-flex class="text-xs-center" mt-5>
+        <v-btn dark true v-on:click="facebookSignIn" color="facebook" type="submit">Sign In using Facebook</v-btn>
+        <v-btn dark true v-on:click="googleSignIn" color="google" type="submit">Sign In using Google</v-btn>
       </v-flex>
     </v-layout>
   </v-container>
 </template>
 
 <script>
+import {faceProvider, auth, gooProvider} from '../firebase'
+
 export default {
   data () {
     return {
@@ -50,6 +57,12 @@ export default {
     }
   },
   methods: {
+    googleSignIn: function () {
+      auth.signInWithPopup(gooProvider).then((result) => { this.$store.dispatch('socialMediaSignUp', result.user) })
+    },
+    facebookSignIn: function () {
+      auth.signInWithPopup(faceProvider).then((result) => { this.$store.dispatch('socialMediaSignUp', result.user) })
+    },
     userSignIn () {
       this.$store.dispatch('userSignIn', { email: this.email, password: this.password })
     }
