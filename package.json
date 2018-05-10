@@ -1,5 +1,5 @@
 {
-  "name": "basic-spa-vue-firebase",
+  "name": "skyer",
   "version": "1.0.0",
   "description": "A Vue.js project",
   "author": "Oleg",
@@ -72,5 +72,8 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "main": "index.js",
+  "repository": "https://github.com/EFPs/Rapid2.git",
+  "license": "MIT"
 }
