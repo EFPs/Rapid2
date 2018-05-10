@@ -1,9 +1,13 @@
+<!--HTML-->
 <template>
+  <!--A box, that go to full screen-->
   <v-container fluid>
     <v-layout row wrap>
       <v-flex xs12 class="text-xs-center" mt-5>
         <h1>Home page</h1>
+        <!--A content holder-->
       </v-flex>
+      <!--mt = margin top ..-->
       <v-flex xs12 class="text-xs-center" mt-3>
         <p>This is a user's home page.</p>
       </v-flex>
@@ -27,6 +31,11 @@
   </v-container>
 </template>
 
+
+<!--JS-->
+<!--<script></script>-->
+
+<!--CSS-->
 <script>
 export default {}
 </script>

@@ -54,6 +54,7 @@ export default {
       this.$store.dispatch('userSignIn', { email: this.email, password: this.password })
     }
   },
+  // Defind new variable
   computed: {
     error () {
       return this.$store.state.error
@@ -62,6 +63,7 @@ export default {
       return this.$store.state.loading
     }
   },
+  // What to do when velue change
   watch: {
     error (value) {
       if (value) {

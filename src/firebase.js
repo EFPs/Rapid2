@@ -1,12 +1,12 @@
 import firebase from 'firebase'
 
 const config = {
-  apiKey: 'AIzaSyDOhyQXZMYPxIDRhUL9R3ar5j-DnP8qlL0',
-  authDomain: 'simple-note-31073.firebaseapp.com',
-  databaseURL: 'https://simple-note-31073.firebaseio.com',
-  projectId: 'simple-note-31073',
-  storageBucket: 'simple-note-31073.appspot.com',
-  messagingSenderId: '668969723863'
+  apiKey: 'AIzaSyCGg0dzROQaUS93cueTMgatU9kGEpo6pZQ',
+  authDomain: 'skyer-499ee.firebaseapp.com',
+  databaseURL: 'https://skyer-499ee.firebaseio.com',
+  projectId: 'skyer-499ee',
+  storageBucket: 'skyer-499ee.appspot.com',
+  messagingSenderId: '736020680877'
 }
 
 firebase.initializeApp(config)
