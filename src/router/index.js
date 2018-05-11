@@ -6,6 +6,7 @@ import Landing from '@/components/Landing'
 // import NotFound from '@/components/NotFound'
 import Signup from '@/components/Signup'
 import Signin from '@/components/Signin'
+import Setup from '@/components/Setup'
 
 Vue.use(Router)
 
@@ -40,6 +41,12 @@ export default new Router({
       path: '/home',
       name: 'Home',
       component: Home,
+      beforeEnter: AuthGuard
+    },
+    {
+      path: '/setup',
+      name: 'Setup',
+      component: Setup,
       beforeEnter: AuthGuard
     }
     // {

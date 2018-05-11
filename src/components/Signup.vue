@@ -101,6 +101,7 @@
 </template>
 
 <script>
+
 export default {
   data () {
     return {
@@ -135,7 +136,7 @@ export default {
       if (this.comparePasswords !== true) {
         return
       }
-      this.$store.dispatch('userSignUp', { email: this.email, password: this.password, firstName: this.firstName, lastName: this.lastName, sid: this.sid, major: this.major.valueOf() })
+      this.$store.dispatch('userSignUp', { email: this.email, password: this.password, firstName: this.firstName, lastName: this.lastName, sid: this.sid, major: this.major })
     }
   },
   watch: {
