@@ -54,7 +54,7 @@ export default {
       this.$store.dispatch('userSignIn', { email: this.email, password: this.password })
     }
   },
-  // Defind new variable
+  // Define new variable
   computed: {
     error () {
       return this.$store.state.error
