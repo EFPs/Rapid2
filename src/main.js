@@ -28,7 +28,7 @@ Vue.config.productionTip = false
 const unsubscribe = firebase.auth()
 
 .onAuthStateChanged((firebaseUser) => {
-  console.log("User Changes")
+
   new Vue({
     el: '#app',
     router,

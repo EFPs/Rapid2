@@ -31,14 +31,16 @@ export const store = new Vuex.Store({
       .then(firebaseUser => {
         commit('setUser', {email: firebaseUser.email})
         auth.signInWithEmailAndPassword(payload.email, payload.password)
+        db.ref('users/' + payload.sid).push({ sid: payload.sid, email: payload.email, firstName: payload.firstName, lastName: payload.lastName, major: payload.major })
         commit('setLoading', false)
         router.push('/home')
-      }).then(firebaseUser => { console.log('Current User ', auth.currentUser); db.ref('users/' + payload.sid).push({ sid: payload.sid, email: payload.email, firstName: payload.firstName, lastName: payload.lastName, major: payload.major }) })
+      }).then(firebaseUser => { console.log('Current User ', auth.currentUser, this.isAuthenticated()) })
         // .then(firebaseUser => { db.ref('users/' + payload.sid).push({ sid: payload.sid, email: payload.email, firstName: payload.firstName, lastName: payload.lastName, major: payload.major }) })
-      .catch(error => {
-        commit('setError', error.message)
-        commit('setLoading', false)
-      })
+        // .then(firebaseUser => { console.log('Current User ', auth.currentUser) })
+        .catch(error => {
+          commit('setError', error.message)
+          commit('setLoading', false)
+        })
     },
     userSignIn ({commit}, payload) {
       commit('setLoading', true)
