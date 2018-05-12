@@ -73,7 +73,9 @@
       menuItems () {
         if (this.isAuthenticated) {
           return [
-            { title: 'Home', path: '/home', icon: 'home' }
+            { title: 'Home', path: '/home', icon: 'home' },
+            { title: 'Profile', path: '/profile', icon: 'face' },
+            { title: 'Add Courses', path: '/setup', icon: 'home' }
           ]
         } else {
           return [

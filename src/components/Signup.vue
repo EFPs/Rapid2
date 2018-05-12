@@ -137,7 +137,7 @@ export default {
       if (this.comparePasswords !== true) {
         return
       }
-      this.$store.dispatch('userSignUp', { email: this.email, password: this.password, firstName: this.firstName, lastName: this.lastName, sid: this.sid, major: this.major })
+      this.$store.dispatch('userSignUp', { email: this.email, password: this.password, firstName: this.firstName, lastName: this.lastName, sid: this.sid, major: this.major['major'] })
     }
   },
   watch: {

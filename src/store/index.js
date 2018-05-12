@@ -58,7 +58,9 @@ export const store = new Vuex.Store({
       })
     },
     autoSignIn ({commit}, payload) {
-      commit('setUser', {email: payload.email})
+      // commit('setUser', {email: payload.email})
+      commit('setUser', payload)
+      console.log('From Store User', this.state.user, payload)
     },
     userSignOut ({commit}) {
       auth.signOut()

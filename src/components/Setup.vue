@@ -10,8 +10,8 @@
     </v-layout>
     <!--<h1>R2</h1>-->
     <v-layout row wrap align-center>
-      <v-layout column wrap >
-        <v-flex xs6 sm6 md6 ls6>
+      <v-layout row wrap >
+        <v-flex xs12 sm12 md12 ls12>
 
           <h1>List of all courses</h1>
           <v-card>
@@ -34,7 +34,7 @@
             >
               <template slot="items" slot-scope="props">
                 <td>{{ props.item.cid }}</td>
-                <td class="text-xs-left">{{ props.item.name }}</td>
+                <td class="text-xs-left">{{ props.item.Name }}</td>
                 <v-btn v-on:click.native ="addCourses( props.item )">ADD</v-btn>
               </template>
               <v-alert slot= 'no-results' :value="true" color="error" icon="warning">
@@ -45,18 +45,18 @@
 
         </v-flex>
       </v-layout>
-      <v-spacer></v-spacer>
+      <!--<v-spacer xs1></v-spacer>-->
       <!--<v-layout column>-->
         <!--<v-flex xs0 sm0.5 md0 ls1></v-flex>-->
       <!--</v-layout>-->
-      <v-layout column wrap>
-        <v-flex xs6 sm6 md6 ls6>
+      <v-layout row wrap>
+        <v-flex xs12 sm12 md12 ls12>
 
-          <h1>Added Courses</h1>
+          <h1>Taken Courses</h1>
 
           <v-card>
             <v-card-title>
-              Added {{  }} Courses.
+              Taken {{  }} Courses.
               <v-spacer></v-spacer>
               <v-text-field
                 v-model="searchTaken"
@@ -74,8 +74,8 @@
             >
               <template slot="items" slot-scope="props">
                 <td>{{ props.item.cid }}</td>
-                <td class="text-xs-left">{{ props.item.name }}</td>
-                <v-btn v-on:click.native ="removeTaken(props.item, props.item.cid, props.item.name )">REMOVE</v-btn>
+                <td class="text-xs-left">{{ props.item.Name }}</td>
+                <v-btn v-on:click.native ="removeTaken(props.item, props.item.cid, props.item.Name )">REMOVE</v-btn>
               </template>
               <v-alert slot= 'no-results' :value="true" color="error" icon="warning">
                 Your search for "{{ searchTaken }}" found no results.
@@ -85,7 +85,6 @@
 
         </v-flex>
       </v-layout>
-        <!--<v-btn v-bind:onclick="this.a">a</v-btn>-->
     </v-layout>
     <v-layout row>
       <v-flex xs="10">
@@ -106,18 +105,19 @@
   export default {
     data () {
       return {
-        user: this.$store.dispatch('getUser'),
+        user: auth.currentUser,
+        // user: this.$store.getters.getUser,
         // user: auth.currentUser,
         searchCourses: '',
         searchTaken: '',
         courses: {},
-        headers: [{text: 'CID', sortable: true, value: 'cid'}, {text: 'Name', value: 'name'}]
+        headers: [{text: 'CID', sortable: true, value: 'cid'}, {text: 'Name', value: 'Name'}]
       }
     },
     methods: {
       removeTaken (course) {
         console.log(this.target)
-        console.log('Remove', course.cid, course.name)
+        console.log('Remove', course.cid, course.Name)
         this.$firebaseRefs.target.child(course['.key']).remove()
       },
       addCourses (course) {
@@ -126,11 +126,12 @@
           window.alert('You already added this course')
         } else {
           console.log('Add', course.cid, course.name)
-          this.$firebaseRefs.target.child(course['.key']).set({cid: course.cid, name: course.name})
+          // TODO: IF NEEDED, ADD prereq
+          this.$firebaseRefs.target.child(course['.key']).set({cid: course.cid, Name: course.Name, Credits: course.Credits})
         }
       },
       confirm () {
-        console.log('ref', 'users/' + auth.currentUser.uid.toString() + '/takenCourses')
+        // console.log('ref', 'users/' + auth.currentUser.uid.toString() + '/takenCourses')
         console.log('target', this.target)
         if (window.confirm('Confirm changes? \n(You can come back later)')) {
           router.push('/home')
@@ -162,14 +163,16 @@
         }
       }
     },
-    firebase: {
-      courses: {
-        source: db.ref('demoCourses')
-      },
-      target: {
-        // source: db.ref('users/3m3UGrQiwCMqfuuABTSUyNzDsKt1/takenCourses/')
-        // source: db.ref('users/' + auth.currentUser.uid.toString() + '/takenCourses')
-        source: db.ref('users/' + this.user.uid.toString() + '/takenCourses')
+    firebase: function () {
+      return {
+        courses: {
+          source: db.ref('courses/all')
+        },
+        target: {
+          // source: db.ref('users/lR9nVGtLfZfPFk4YKwZlAyJJl743/takenCourses/')
+          // source: db.ref('users/' + auth.currentUser.uid.toString() + '/takenCourses')
+          source: db.ref('users/' + this.user.uid.toString() + '/takenCourses')
+        }
       }
     }
   }

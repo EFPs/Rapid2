@@ -7,11 +7,13 @@ import Landing from '@/components/Landing'
 import Signup from '@/components/Signup'
 import Signin from '@/components/Signin'
 import Setup from '@/components/Setup'
+import Profile from '@/components/Profile'
+import {auth} from '../firebase'
 
 Vue.use(Router)
 
 const AuthGuard = (to, from, next) => {
-  if (firebase.auth().currentUser) {
+  if (auth.currentUser) {
     next()
   } else {
     next('/signin')
@@ -47,6 +49,12 @@ export default new Router({
       path: '/setup',
       name: 'Setup',
       component: Setup,
+      beforeEnter: AuthGuard
+    },
+    {
+      path: '/profile',
+      name: 'Profile',
+      component: Profile,
       beforeEnter: AuthGuard
     }
     // {
