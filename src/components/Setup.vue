@@ -2,6 +2,7 @@
   <v-container grid-list-md text-xs-center>
     <v-layout row wrap align-center>
       <v-flex class="text-xs-center">
+        <h1>Welcome {{ user.displayName }}</h1>
         <h1>Please add all the courses that you have taken up to this point</h1><br/>
         <h2>This will be use to calculate the next course that you should take </h2><br/>
       </v-flex>
@@ -34,7 +35,7 @@
               <template slot="items" slot-scope="props">
                 <td>{{ props.item.cid }}</td>
                 <td class="text-xs-left">{{ props.item.name }}</td>
-                <v-btn v-on:click.native ="addCourses( props.item.cid, props.item.name )">ADD</v-btn>
+                <v-btn v-on:click.native ="addCourses( props.item )">ADD</v-btn>
               </template>
               <v-alert slot= 'no-results' :value="true" color="error" icon="warning">
                 Your search for "{{ searchCourses }}" found no results.
@@ -68,13 +69,13 @@
             <v-data-table
               v-model="searchTaken"
               :headers="headers"
-              :items="takenCourses"
+              :items="target"
               :search="searchTaken"
             >
               <template slot="items" slot-scope="props">
                 <td>{{ props.item.cid }}</td>
                 <td class="text-xs-left">{{ props.item.name }}</td>
-                <v-btn v-on:click.native ="removeTaken( props.item.cid, props.item.name )">REMOVE</v-btn>
+                <v-btn v-on:click.native ="removeTaken(props.item, props.item.cid, props.item.name )">REMOVE</v-btn>
               </template>
               <v-alert slot= 'no-results' :value="true" color="error" icon="warning">
                 Your search for "{{ searchTaken }}" found no results.
@@ -92,7 +93,7 @@
       </v-flex>
     </v-layout>
     <v-layout row wrap>
-      <v-btn block color="success"> CONFIRM </v-btn>
+      <v-btn block color="success" v-on:click.native="confirm"> CONFIRM </v-btn>
     </v-layout>
   </v-container>
 </template>
@@ -100,50 +101,47 @@
 
 <script>
   import {db, auth} from '../firebase'
+  import router from '../router'
+
   export default {
     data () {
       return {
+        user: this.$store.dispatch('getUser'),
+        // user: auth.currentUser,
         searchCourses: '',
         searchTaken: '',
         courses: {},
-        takenCourses: [],
-        // courses: db.ref('demoCourses/'),
         headers: [{text: 'CID', sortable: true, value: 'cid'}, {text: 'Name', value: 'name'}]
       }
     },
-    firebase: {
-      courses: {
-        source: db.ref('demoCourses'),
-        // target: db.ref('users/' + auth.currentUser.uid + '/takenCourses')
-      }
-    },
     methods: {
-      removeTaken (cid, name) {
-        console.log('Remove', cid, name)
-        const index = this.takenCourses.indexOf(this.takenCourses.filter(c => c.cid === cid).pop())
-        // console.log('index', index)
-        // console.log(this.takenCourses)
-        this.takenCourses.splice(index, 1)
-        // console.log(this.takenCourses.indexOf({cid, name}))
-        // console.log(this.takenCourses)
+      removeTaken (course) {
+        console.log(this.target)
+        console.log('Remove', course.cid, course.name)
+        this.$firebaseRefs.target.child(course['.key']).remove()
       },
-      addCourses (cid, name) {
-        console.log(this.courses)
-        if (this.takenCourses.filter(c => c.cid === cid).pop()) {
+      addCourses (course) {
+        console.log(this.target)
+        if (this.target.filter(c => c.cid === course.cid).pop()) {
           window.alert('You already added this course')
         } else {
-          console.log('Add', cid, name)
-          this.takenCourses.push(this.courses.filter(c => c.cid === cid).pop())
+          console.log('Add', course.cid, course.name)
+          this.$firebaseRefs.target.child(course['.key']).set({cid: course.cid, name: course.name})
         }
       },
       confirm () {
-        if (window.confirm()) {
-          // this.target.
+        console.log('ref', 'users/' + auth.currentUser.uid.toString() + '/takenCourses')
+        console.log('target', this.target)
+        if (window.confirm('Confirm changes? \n(You can come back later)')) {
+          router.push('/home')
         }
       }
     },
     // Defind new variable
     computed: {
+      onAuthStateChanged () {
+        router.push('/setup')
+      },
       error () {
         return this.$store.state.error
       },
@@ -162,6 +160,16 @@
         if (!value) {
           this.$store.commit('setError', null)
         }
+      }
+    },
+    firebase: {
+      courses: {
+        source: db.ref('demoCourses')
+      },
+      target: {
+        // source: db.ref('users/3m3UGrQiwCMqfuuABTSUyNzDsKt1/takenCourses/')
+        // source: db.ref('users/' + auth.currentUser.uid.toString() + '/takenCourses')
+        source: db.ref('users/' + this.user.uid.toString() + '/takenCourses')
       }
     }
   }

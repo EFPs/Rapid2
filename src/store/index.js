@@ -30,10 +30,11 @@ export const store = new Vuex.Store({
       auth.createUserWithEmailAndPassword(payload.email, payload.password)
       .then(firebaseUser => {
         commit('setUser', {email: firebaseUser.email})
+        auth.currentUser.updateProfile({ displayName: payload.firstName })
         console.log('auth', auth)
         console.log('user', auth.currentUser)
         db.ref('users/' + auth.currentUser.uid).set({ sid: payload.sid, email: payload.email, firstName: payload.firstName, lastName: payload.lastName, major: payload.major })
-        // db.ref('users/' + auth.currentUser.uid + '/takenCourses').push()
+        db.ref('users/' + auth.currentUser.uid + '/takenCourses').set({ cid: 'test' })
         commit('setLoading', false)
         router.push('/setup')
       })
@@ -72,6 +73,9 @@ export const store = new Vuex.Store({
   getters: {
     isAuthenticated (state) {
       return state.user !== null && state.user !== undefined
+    },
+    getUser (state) {
+      return state.user
     }
   }
 })

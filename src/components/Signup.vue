@@ -92,6 +92,7 @@
             </v-flex>
             <v-flex class="text-xs-center" mt-5>
               <v-btn color="primary" type="submit" :disabled="loading">Sign Up</v-btn>
+              <v-btn to="/signin">Cancel</v-btn>
             </v-flex>
           </v-layout>
         </form>
@@ -114,9 +115,9 @@ export default {
       alert: false,
       sid: '',
       majors: [
-        { major: 'ICCS' },
-        { major: 'ICMK' },
-        { major: 'ICPY' }
+        { major: 'CS' },
+        { major: 'MK' },
+        { major: 'PY' }
       ]
     }
   },
