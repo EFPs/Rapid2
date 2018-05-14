@@ -64,6 +64,30 @@
       v-model="time"
     />
 
+    <h2>Extra spice and everything nice</h2>
+    <treeselect
+      name="demo"
+      :multiple=false
+      :clearable=true
+      :open-on-click=true
+      :clear-on-select=true
+      :options="suggested"
+      :max-height="200"
+      v-model="sg"
+    />
+
+    <h2>On a scale of 1 to 5, what's the workload level</h2>
+    <treeselect
+      name="demo"
+      :multiple=false
+      :clearable=true
+      :open-on-click=true
+      :clear-on-select=true
+      :options="workload"
+      :max-height="200"
+      v-model="wl"
+    />
+
 
     <v-flex class="text-xs-center" mt-5>
       <v-btn color="primary" v-on:click="confirm" type="submit">confirm</v-btn>
@@ -89,6 +113,8 @@
         display: '',
         cname: '',
         time: '',
+        sg: '',
+        wl: 0,
         searchCourses: '',
         searchTaken: '',
         selectedCourse: {
@@ -98,7 +124,9 @@
           day: [],
           prec: [],
           prereq: false,
-          time: ''
+          time: '',
+          suggested: '',
+          workload: 0
         },
         courses: [],
         headers: [{text: 'CID', sortable: true, value: 'cid'}, {text: 'Name', value: 'Name'}],
@@ -126,6 +154,35 @@
         }, {
           id: 'Sunday',
           label: 'Sunday'
+        }],
+        workload: [{
+          id: 1,
+          label: 'Meh+'
+        }, {
+          id: 2,
+          label: 'Kinda easy'
+        }, {
+          id: 3,
+          label: 'OK'
+        }, {
+          id: 4,
+          label: 'Rough'
+        }, {
+          id: 5,
+          label: 'No life'
+        }],
+        suggested: [{
+          id: 'Required',
+          label: 'Required'
+        }, {
+          id: 'Suggested by advisor',
+          label: 'Suggested by advisor'
+        }, {
+          id: 'Once a year',
+          label: 'Once a year'
+        }, {
+          id: '',
+          label: 'None'
         }],
         timeSelect: [{
           id: '2',
@@ -204,10 +261,13 @@
       confirm () {
         this.selectedCourse.time = this.time
         this.selectedCourse.day = this.value
+        this.selectedCourse.suggested = this.sg
+        this.selectedCourse.workload = this.wl
         console.log(this.selectedCourse)
         // console.log(auth.currentUser.uid)
         db.ref('lecturers/' + auth.currentUser.uid + '/courses').push(
           this.selectedCourse)
+        // db.ref('')
       }
     },
     firebase: function () {
