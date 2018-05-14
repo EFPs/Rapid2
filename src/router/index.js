@@ -15,7 +15,6 @@ import Profile from '@/components/Profile'
 import {auth, db} from '../firebase'
 import EditProfile from '@/components/EditProfile'
 import Dashboard from '@/components/Dashboard'
-import {auth} from '../firebase'
 
 Vue.use(Router)
 
@@ -114,7 +113,8 @@ export default new Router({
       name: 'LecturerAddCourse',
       component: LecturerAddCourse,
       beforeEnter: LectGuard
-    }
+    },
+    {
       path: '/edit',
       name: 'EditProfile',
       component: EditProfile,
@@ -125,7 +125,7 @@ export default new Router({
       name: 'Dashboard',
       component: Dashboard,
       beforeEnter: AuthGuard
-    },
+    }
     // {
     //   path: '*',
     //   name: 'NotFound',
