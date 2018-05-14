@@ -37,17 +37,6 @@ function check (l, to, from, next) {
 }
 
 const LectGuard = (to, from, next) => {
-  // const lect = db.ref('lecturers/' + auth.currentUser.uid)
-  // let allow = false
-  // let i = 0
-  // // console.log(lect.length)
-  // for (i = 0; i < this.lecturer.length; i++) {
-  //   console.log(this.lecturer[i]['.key'])
-  //   if (this.lecturer[i]['.key'] === 'lecturer') {
-  //     console.log('found')
-  //     allow = true
-  //   }
-  // }
   try {
     db.ref('lecturers/' + auth.currentUser.uid)
     .once('value').then(function (snapshot) {
