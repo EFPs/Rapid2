@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import firebase from 'firebase'
 import Home from '@/components/Home'
 import Landing from '@/components/Landing'
 // import NotFound from '@/components/NotFound'
@@ -8,6 +7,8 @@ import Signup from '@/components/Signup'
 import Signin from '@/components/Signin'
 import Setup from '@/components/Setup'
 import Profile from '@/components/Profile'
+import EditProfile from '@/components/EditProfile'
+import Dashboard from '@/components/Dashboard'
 import {auth} from '../firebase'
 
 Vue.use(Router)
@@ -56,7 +57,19 @@ export default new Router({
       name: 'Profile',
       component: Profile,
       beforeEnter: AuthGuard
-    }
+    },
+    {
+      path: '/edit',
+      name: 'EditProfile',
+      component: EditProfile,
+      beforeEnter: AuthGuard
+    },
+    {
+      path: '/dashboard',
+      name: 'Dashboard',
+      component: Dashboard,
+      beforeEnter: AuthGuard
+    },
     // {
     //   path: '*',
     //   name: 'NotFound',

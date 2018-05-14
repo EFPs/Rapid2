@@ -1340,6 +1340,12 @@ check-types@^7.3.0:
   version "7.3.0"
   resolved "https://registry.yarnpkg.com/check-types/-/check-types-7.3.0.tgz#468f571a4435c24248f5fd0cb0e8d87c3c341e7d"
 
+cheetah-grid@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/cheetah-grid/-/cheetah-grid-0.5.0.tgz#a7ab5c304a9137348226d4f9115d50243553dcea"
+  dependencies:
+    xmldom "^0.1.27"
+
 chokidar@^2.0.0, chokidar@^2.0.2:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-2.0.3.tgz#dcbd4f6cbb2a55b4799ba8a840ac527e5f4b1176"
@@ -6581,6 +6587,10 @@ ws@^4.0.0:
   dependencies:
     async-limiter "~1.0.0"
     safe-buffer "~5.1.0"
+
+xmldom@^0.1.27:
+  version "0.1.27"
+  resolved "https://registry.yarnpkg.com/xmldom/-/xmldom-0.1.27.tgz#d501f97b3bdb403af8ef9ecc20573187aadac0e9"
 
 xmlhttprequest@1.8.0:
   version "1.8.0"

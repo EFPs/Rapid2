@@ -1,6 +1,7 @@
 <template>
-  <v-app>
-    <v-navigation-drawer v-model="sidebar" app>
+
+  <v-app :style="{ 'background-image': 'url(' + img + ')', 'background-size': 'cover', 'background-repeat': 'no-repeat'  }">
+    <v-navigation-drawer dark v-model="sidebar" app :style="{ 'background-color': 'gray', 'opacity': '0.8' }">
       <v-list>
         <v-list-tile
           v-for="item in menuItems"
@@ -20,7 +21,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-toolbar app>
+    <v-toolbar app color="primary">
       <span class="hidden-sm-and-up">
         <v-toolbar-side-icon @click="sidebar = !sidebar">
         </v-toolbar-side-icon>
@@ -46,20 +47,25 @@
         </v-btn>
       </v-toolbar-items>
     </v-toolbar>
-
     <v-content>
+
       <v-container fluid>
         <router-view></router-view>
       </v-container>
     </v-content>
 
   </v-app>
+
 </template>
 
 <script>
   export default {
     data () {
       return {
+        img: 'static/kym-ellis-662656-unsplash.jpg',
+        img2: 'static/mt-cook.jpg',
+        img3: 'static/mike-wilson-263697-unsplash.jpg',
+        img4: 'static/aman-dhakal-205796-unsplash.jpg',
         sidebar: false
       }
     },

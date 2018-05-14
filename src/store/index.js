@@ -8,7 +8,7 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   state: {
-    appTitle: 'My Awesome App',
+    appTitle: 'Skyer',
     user: null,
     error: null,
     loading: false
@@ -34,7 +34,7 @@ export const store = new Vuex.Store({
         console.log('auth', auth)
         console.log('user', auth.currentUser)
         db.ref('users/' + auth.currentUser.uid).set({ sid: payload.sid, email: payload.email, firstName: payload.firstName, lastName: payload.lastName, major: payload.major })
-        db.ref('users/' + auth.currentUser.uid + '/takenCourses').set({ cid: 'test' })
+        // db.ref('users/' + auth.currentUser.uid + '/takenCourses').set({ cid: 'test' })
         commit('setLoading', false)
         router.push('/setup')
       })

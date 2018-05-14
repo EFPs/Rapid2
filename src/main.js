@@ -48,7 +48,7 @@ const unsubscribe = firebase.auth()
       if (firebaseUser) {
         store.dispatch('autoSignIn', firebaseUser)
       }else{
-        router.push('/signup')
+        router.push('/signin')
       }
     }
   })

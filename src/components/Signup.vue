@@ -2,24 +2,26 @@
   <v-container fluid>
     <v-layout row wrap>
       <v-flex xs12 class="text-xs-center" mt-5>
-        <h1>Sign Up</h1>
+        <h1 style="color: white">Sign Up</h1>
       </v-flex>
       <v-flex xs12 sm6 offset-sm3 mt-3>
         <form @submit.prevent="userSignUp">
-          <v-layout column>
-            <v-flex>
-              <v-alert type="error" dismissible v-model="alert">
-                {{ error }}
-              </v-alert>
-            </v-flex>
+          <v-flex>
+            <v-alert type="error" dismissible v-model="alert">
+              {{ error }}
+            </v-alert>
+          </v-flex>
+          <v-layout column :style="{'background-color': 'rgba(0,0,0,0.5)', 'border-radius': '15px'}">
+            <br/>
             <v-flex>
               <v-text-field
                 name="email"
                 label="Email"
                 id="email"
                 type="email"
-                color="textBox"
+                color="primary"
                 v-model="email"
+                dark
                 required></v-text-field>
             </v-flex>
             <v-flex>
@@ -28,8 +30,9 @@
                 label="Password"
                 id="password"
                 type="password"
-                color="textBox"
+                color="primary"
                 v-model="password"
+                dark
                 required></v-text-field>
             </v-flex>
             <v-flex>
@@ -38,20 +41,22 @@
                 label="Confirm Password"
                 id="confirmPassword"
                 type="password"
-                color="textBox"
+                color="primary"
+                dark
                 required
                 v-model="passwordConfirm"
                 :rules="[comparePasswords]"
                 ></v-text-field>
             </v-flex>
             <v-flex>
-              <h5 color="red">Warning: Double check your ID, this website based heavily on this information !</h5>
+              <h5 style="color: lawngreen">Warning: Double check your information below, this website based heavily on these information !</h5>
               <v-text-field
                 name="sid"
                 label="Student ID"
                 id="sid"
                 type="text"
-                color="textBox"
+                color="primary"
+                dark
                 required
                 v-model="sid"
               ></v-text-field>
@@ -63,7 +68,8 @@
                 v-model="major"
                 label="Select Major"
                 item-text="major"
-                color="textBox"
+                color="primary"
+                dark
                 autocomplete
                 required
               ></v-select>
@@ -75,7 +81,8 @@
                 id="firstName"
                 type="text"
                 required
-                color="textBox"
+                color="primary"
+                dark
                 v-model="firstName"
               ></v-text-field>
             </v-flex>
@@ -86,12 +93,13 @@
                 id="lastName"
                 type="text"
                 required
-                color="textBox"
+                color="primary"
+                dark
                 v-model="lastName"
               ></v-text-field>
             </v-flex>
             <v-flex class="text-xs-center" mt-5>
-              <v-btn color="primary" type="submit" :disabled="loading">Sign Up</v-btn>
+              <v-btn @click.native="loader = 'loading'" :loading="loading" color="primary" type="submit" :disabled="loading">Sign Up</v-btn>
               <v-btn to="/signin">Cancel</v-btn>
             </v-flex>
           </v-layout>
@@ -102,7 +110,6 @@
 </template>
 
 <script>
-
 export default {
   data () {
     return {

@@ -1,58 +1,68 @@
-<template>
-  <v-container grid-list-md text-xs-center >
-    <v-layout row wrap >
+<template >
+  <div :style="{ 'background-image': 'url(' + img + ')', 'border-radius': '20px' }">
+  <v-jumbotron  :gradient="gradientBg" height="1000" >
+  <v-container grid-list-md text-xs-center fluid>
 
-      <v-flex xs4>
-        <v-jumbotron  :gradient="gradient"
-                      >
-          cOL1
-        <v-layout column>
-          <v-flex>
-            <v-btn v-on:click.native = 'getCreditSum'> as</v-btn>
-            <h1>PHOTO</h1>
-            <!--<v-avatar-->
-              <!--:tile="tile"-->
-              <!--:size="100"-->
-              <!--color="grey lighten-4"-->
-            <!--&gt;-->
-              <!--<img src= '' alt="avatar"/>-->
-            <!--</v-avatar>-->
+    <v-layout column>
+      <v-flex md10 offset-md-10 hight="1000">
+      </v-flex>
+
+    <v-layout row wrap >
+      <v-flex offset-md-7></v-flex>
+      <v-flex xs4 >
+        <v-jumbotron  :gradient="gradient">
+          <br/>
+        <v-flex  >
+          <h1>{{ this.name }}</h1>
+        </v-flex>
+
+
+        <v-layout column >
+
+          <br/>
+          <v-flex xs4 align-content-center>
+            <v-avatar
+              :size="100"
+              color="grey lighten-4"
+            >
+              <img src={this.img} />
+            </v-avatar>
+            <!--<h1>{{ this.user.displayName }}</h1>-->
+          </v-flex>
+
+        </v-layout>
+        <v-layout column >
+          <br/><br/>
+          <v-flex xs1 align-content-center>
+            <v-btn dark color="secondary" v-on:click.native='goToEdit' flex>Edit profile</v-btn>
           </v-flex>
         </v-layout>
-
-            <v-spacer></v-spacer>
-            <v-layout column>
-              <v-flex>
-                <v-btn flex>Edit profile</v-btn>
-              </v-flex>
-              <v-flex>
-                <v-btn v-on:click.native='goToSetup'>Edit course</v-btn>
-              </v-flex>
-            </v-layout>
+        <v-layout column >
+          <v-flex xs1 align-content-center>
+            <v-btn dark color="primary" v-on:click.native='goToSetup'>Edit course</v-btn>
+          </v-flex>
+        </v-layout>
           </v-jumbotron>
       </v-flex>
-      <v-spacer xs1></v-spacer>
+      <!--<v-spacer xs1></v-spacer>-->
+      <v-flex offset-md-10></v-flex>
       <v-flex xs7>
-        COL2
         <v-layout column>
-          <v-flex >
-            R1
+          <v-flex>
             <v-layout row align-center>
-              <v-flex>
-                Remaining credit {{ this.creditSum }}
+              <v-flex style="background-color: rgba(0, 179, 0,0.7); border-radius: 15px">
+                <h2 style="color: wheat;"> Credits Own : {{ this.creditSum }}</h2>
               </v-flex>
-
-              <v-flex>
-                Remaining credit
+              <v-flex ml-2 style="background-color: rgba(0, 172, 230,0.6); border-radius: 15px">
+                <h2 style="color: wheat;"> Credits Remaining : {{ this.maxCredits - this.creditSum  }}</h2>
               </v-flex>
             </v-layout>
           </v-flex>
-
-          <v-flex>
-              Text Box
-            <v-card>
-              <v-toolbar color="info" dark>
-                <v-toolbar-title>Profile</v-toolbar-title>
+          <v-flex ></v-flex>
+          <v-flex xs 4 >
+            <v-card dark>
+              <v-toolbar color="info" >
+                <v-toolbar-title >Profile</v-toolbar-title>
               </v-toolbar>
               <v-card-text align-left>
                 <span class="title" >Personal Info</span>
@@ -74,18 +84,21 @@
                 <span class="title">E-mail :    {{ this.email }}</span>
               </v-card-text>
             </v-card>
+            <v-btn v-on:click.native = 'a'> as</v-btn>
           </v-flex>
         </v-layout>
 
 
       </v-flex>
+      <v-flex offset-md-7></v-flex>
 
+    </v-layout>
     </v-layout>
 
   </v-container>
 
-
-
+  </v-jumbotron>
+  </div>
 </template>
 
 
@@ -93,19 +106,26 @@
   import {auth, db} from '../firebase'
   import firebase from 'firebase'
   import router from '../router'
-  export default{
+  export default {
     data () {
       return {
+        img: 'static/la3.jpg',
+        name: 'none',
+        maxCredits: 'none',
         photoUrl: auth.currentUser.photoURL,
-        creditSum: 0,
+        creditSum: 'none',
         user: firebase.auth().currentUser,
         gradient: 'to top, #7B1FA2, #E1BEE7',
+        gradientBg: 'to top right, rgba(63,81,181, .7), rgba(25,32,72, .7)',
         email: auth.currentUser.email,
         userInfo: []
       }
     },
     firebase: function () {
       return {
+        majorCredits: {
+          source: db.ref('demoMajorCredits/')
+        },
         userInfo: {
           source: db.ref('users/' + this.user.uid)
         },
@@ -114,53 +134,70 @@
         }
       }
     },
-    beforeCreate () {
-      this.getCreditSum()
-      // firebase.auth().onAuthStateChanged((user) => {
-      //   // initially user = null, after auth it will be either <fb_user> or false
-      //   this.$store.commit('setUser', user || false)
-      //   if (user) {
-      //
-      //   } else if (!user && this.$route.path !== '/login') {
-      //     this.$router.replace('/login')
-      //   }
-      // })
-    },
-    beforeMount () {
-      this.getCreditSum()
+    beforeUpdate () {
+      if (this.name === 'none') {
+        this.name = this.user.displayName
+      }
+
+      if (this.creditSum === 'none') {
+        let i = 0
+        this.creditSum = 0
+        console.log('Taken Courses', this.takenCourses)
+        console.log('Length', this.takenCourses.length)
+        for (i = 0; i < this.takenCourses.length; i++) {
+          console.log('credit', this.takenCourses[i].credits)
+          // console.log('as', this.takenCourses[i])
+          this.creditSum += parseInt(this.takenCourses[i].credits)
+        }
+      }
+
+      if (this.maxCredits === 'none') {
+        let major
+        let i = 0
+        this.maxCredits = 0
+        console.log('allmajor', this.majorCredits)
+        for (i = 0; i < this.userInfo.length; i++) {
+          if (this.userInfo[i]['.key'] === 'major') {
+            major = this.userInfo[i]['.value']
+            break
+          }
+        }
+        for (i = 0; i < this.majorCredits.length; i++) {
+          if (this.majorCredits[i]['.key'] === major) {
+            break
+          }
+          i = -1
+        }
+        console.log('major', major)
+        console.log('indexTotal', i)
+        this.maxCredits = this.majorCredits[i].total
+        console.log('Max Credits', this.maxCredits)
+      }
     },
     methods: {
       a () {
         console.log(this.user)
         console.log(this.userInfo)
-        this.getCreditSum()
       },
       goToSetup () {
         console.log('Go to setup')
         router.push('/setup')
       },
-      getCreditSum () {
-        this.creditSum = 0
-        let i = 0
-        console.log('yo', this.takenCourses)
-        console.log('Hey', this.takenCourses.length)
-        for (i = 0; i < this.takenCourses.length; i++) {
-          console.log('credit', this.takenCourses[i].Credits)
-          // console.log('as', this.takenCourses[i])
-          this.creditSum += this.takenCourses[i].Credits
-        }
+      goToEdit () {
+        console.log('Go to setup')
+        router.push('/edit')
       }
-    },
-    computed: {
-      creditSum: function () {
-        console.log('From compute')
-        // this.creditSum = 0
-        // let course
-        // for (course in this.takenCourses) {
-        //   console.log(course)
-        //   this.creditSum += course.credit
-        // }
-      }
+      // getCreditSum () {
+      //   this.creditSum = 0
+      //   let i = 0
+      //   console.log('yo', this.takenCourses)
+      //   console.log('Hey', this.takenCourses.length)
+      //   for (i = 0; i < this.takenCourses.length; i++) {
+      //     console.log('credit', this.takenCourses[i].credits)
+      //     // console.log('as', this.takenCourses[i])
+      //     this.creditSum += parseInt(this.takenCourses[i].credits)
+      //   }
+      // }
     }
   }
 </script>
