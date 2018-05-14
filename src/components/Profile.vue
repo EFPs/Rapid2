@@ -28,7 +28,11 @@
               <img src={this.img} />
             </v-avatar>
             <!--<h1>{{ this.user.displayName }}</h1>-->
+
+
+
           </v-flex>
+
 
         </v-layout>
         <v-layout column >
@@ -47,14 +51,17 @@
       <!--<v-spacer xs1></v-spacer>-->
       <v-flex offset-md-10></v-flex>
       <v-flex xs7>
+
         <v-layout column>
           <v-flex>
+
             <v-layout row align-center>
               <v-flex style="background-color: rgba(0, 179, 0,0.7); border-radius: 15px">
                 <h2 style="color: wheat;"> Credits Own : {{ this.creditSum }}</h2>
               </v-flex>
               <v-flex ml-2 style="background-color: rgba(0, 172, 230,0.6); border-radius: 15px">
                 <h2 style="color: wheat;"> Credits Remaining : {{ this.maxCredits - this.creditSum  }}</h2>
+
               </v-flex>
             </v-layout>
           </v-flex>
@@ -63,6 +70,7 @@
             <v-card dark>
               <v-toolbar color="info" >
                 <v-toolbar-title >Profile</v-toolbar-title>
+
               </v-toolbar>
               <v-card-text align-left>
                 <span class="title" >Personal Info</span>
@@ -178,6 +186,7 @@
       a () {
         console.log(this.user)
         console.log(this.userInfo)
+
       },
       goToSetup () {
         console.log('Go to setup')
@@ -186,6 +195,24 @@
       goToEdit () {
         console.log('Go to setup')
         router.push('/edit')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       }
       // getCreditSum () {
       //   this.creditSum = 0
