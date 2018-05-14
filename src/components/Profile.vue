@@ -186,7 +186,6 @@
       a () {
         console.log(this.user)
         console.log(this.userInfo)
-
       },
       goToSetup () {
         console.log('Go to setup')
@@ -195,36 +194,7 @@
       goToEdit () {
         console.log('Go to setup')
         router.push('/edit')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
       }
-      // getCreditSum () {
-      //   this.creditSum = 0
-      //   let i = 0
-      //   console.log('yo', this.takenCourses)
-      //   console.log('Hey', this.takenCourses.length)
-      //   for (i = 0; i < this.takenCourses.length; i++) {
-      //     console.log('credit', this.takenCourses[i].credits)
-      //     // console.log('as', this.takenCourses[i])
-      //     this.creditSum += parseInt(this.takenCourses[i].credits)
-      //   }
-      // }
     }
   }
 </script>
