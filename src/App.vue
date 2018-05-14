@@ -57,6 +57,7 @@
 </template>
 
 <script>
+  import {auth, db} from './firebase'
   export default {
     data () {
       return {
@@ -70,12 +71,28 @@
       isAuthenticated () {
         return this.$store.getters.isAuthenticated
       },
+      isLecturer () {
+        let i = 0
+        for (i = 0; i < this.lecturer.length; i++) {
+          if (this.lecturer[i]['.key'] === 'lecturer') {
+            return true
+          }
+        }
+        console.log('after function')
+        return false
+      },
       menuItems () {
-        if (this.isAuthenticated) {
+        if (this.isAuthenticated && !this.isLecturer) {
           return [
             { title: 'Home', path: '/home', icon: 'home' },
             { title: 'Profile', path: '/profile', icon: 'face' },
             { title: 'Add Courses', path: '/setup', icon: 'home' }
+          ]
+        } else if (this.isAuthenticated && this.isLecturer) {
+          return [
+            { title: 'Home', path: '/home', icon: 'home' },
+            { title: 'LecturerBoard', path: '/lecturerboard', icon: 'home' },
+            { title: 'Add Courses', path: '/lectureraddcourse', icon: 'home' }
           ]
         } else {
           return [
@@ -88,6 +105,13 @@
     methods: {
       userSignOut () {
         this.$store.dispatch('userSignOut')
+      }
+    },
+    firebase: function () {
+      return {
+        lecturer: {
+          source: db.ref('lecturers/' + auth.currentUser.uid)
+        }
       }
     }
   }

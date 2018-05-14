@@ -158,7 +158,7 @@
         // let course
         // for (course in this.takenCourses) {
         //   console.log(course)
-        //   this.creditSum += course.credit
+        //   this.creditSum += ParseInt(course.credits)
         // }
       }
     }

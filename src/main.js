@@ -6,7 +6,7 @@ import 'vuetify/dist/vuetify.min.css'
 import { store } from './store'
 import firebase from './firebase'
 import VueFire from 'vuefire'
-
+import CGrid from 'vue-cheetah-grid'
 /* eslint-disable */
 Vue.use(Vuetify, {
   theme: {
@@ -32,6 +32,7 @@ Vue.use(Vuetify, {
 })
 
 Vue.use(VueFire);
+Vue.use(CGrid)
 
 Vue.config.productionTip = false
 
@@ -48,7 +49,7 @@ const unsubscribe = firebase.auth()
       if (firebaseUser) {
         store.dispatch('autoSignIn', firebaseUser)
       }else{
-        router.push('/signup')
+        router.push('/signin')
       }
     }
   })

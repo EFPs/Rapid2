@@ -65,6 +65,7 @@ export default {
     },
     userSignIn () {
       this.$store.dispatch('userSignIn', { email: this.email, password: this.password })
+        .then(() => this.$store.dispatch('getMajor'))
     }
   },
   // Define new variable
