@@ -268,6 +268,18 @@
         db.ref('lecturers/' + auth.currentUser.uid + '/courses').push(
           this.selectedCourse)
         // db.ref('')
+        if (this.selectedCourse.suggested === 'Required') {
+          db.ref('current/required').push(
+            this.selectedCourse)
+        } else if (this.selectedCourse.suggested === 'Suggested by advisor') {
+          db.ref('current/suggested').push(
+            this.selectedCourse)
+        } else if (this.selectedCourse.suggested === 'Once a year') {
+          db.ref('current/yearly').push(
+            this.selectedCourse)
+        }
+        db.ref('current/all').push(
+          this.selectedCourse)
       }
     },
     firebase: function () {
