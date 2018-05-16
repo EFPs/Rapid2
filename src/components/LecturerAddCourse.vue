@@ -4,8 +4,8 @@
     <v-layout row wrap >
       <v-flex xs12 sm12 md12 ls12>
 
-        <h1>List of all courses</h1>
-        <v-card>
+        <h1 style="color: white; background-color: rgba(0,0,0,0.7)">List of all courses</h1>
+        <v-card dark>
           <v-card-title>
             All {{  }} Courses.<br/>
             <v-spacer></v-spacer>
@@ -26,7 +26,7 @@
             <template slot="items" slot-scope="props">
               <td>{{ props.item.cid }}</td>
               <td class="text-xs-left">{{ props.item.name }}</td>
-              <v-btn v-on:click.native ="addCourse( props.item )">Select</v-btn>
+              <v-btn v-on:click.native ="()=>{addCourse(props.item)}">Select</v-btn>
             </template>
             <v-alert slot= 'no-results' :value="true" color="error" icon="warning">
               Your search for "{{ searchCourses }}" found no results.
@@ -38,9 +38,9 @@
     </v-layout>
   </v-layout>
 
-    <h1>Selected course : {{ this.display }}</h1>
-    <h2>Choose day(s)</h2>
-      <treeselect
+    <h1 style="color: white; background-color: rgba(0,0,0,0.7)"> Selected course : {{ this.display }}</h1>
+    <h2 style="color: white; background-color: rgba(0,0,0,0.7)">Choose day(s)</h2>
+      <treeselect style="background: #3e2723"
         name="demo"
         :multiple=true
         :clearable=true
@@ -52,7 +52,7 @@
         v-model="value"
       />
 
-    <h2>Choose time</h2>
+    <h2 style="color: white; background-color: rgba(0,0,0,0.7)">Choose time</h2>
     <treeselect
       name="demo"
       :multiple=false
@@ -64,7 +64,7 @@
       v-model="time"
     />
 
-    <h2>Extra spice and everything nice</h2>
+    <h2 style="color: white; background-color: rgba(0,0,0,0.7)">Extra spice and everything nice</h2>
     <treeselect
       name="demo"
       :multiple=false
@@ -76,7 +76,7 @@
       v-model="sg"
     />
 
-    <h2>On a scale of 1 to 5, what's the workload level</h2>
+    <h2 style="color: white; background-color: rgba(0,0,0,0.7)">On a scale of 1 to 5, what's the workload level</h2>
     <treeselect
       name="demo"
       :multiple=false
@@ -90,7 +90,18 @@
 
 
     <v-flex class="text-xs-center" mt-5>
-      <v-btn color="primary" v-on:click="confirm" type="submit">confirm</v-btn>
+      <v-btn large color="primary" type="submit" @click.native.stop="dialog = true">confirm</v-btn>
+      <v-dialog v-model="dialog" max-width="290">
+        <v-card>
+          <v-card-title class="headline">You're about to add {{this.selectedCourse.name}}</v-card-title>
+          <v-card-text> text </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="green darken-1" flat="flat" @click.native="dialog = false">Disagree</v-btn>
+            <v-btn color="green darken-1" flat="flat" v-on:click="confirm">Agree</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-flex>
 
   </v-container>
@@ -103,6 +114,8 @@
   import {auth, db} from '../firebase'
   import Treeselect from '@riophae/vue-treeselect'
   import '@riophae/vue-treeselect/dist/vue-treeselect.css'
+  import router from '../router'
+
   export default {
     name: 'board',
     components: { Treeselect },
@@ -111,6 +124,7 @@
         user: auth.currentUser,
         major: this.$store.state.major,
         display: '',
+        dialog: false,
         cname: '',
         time: '',
         sg: '',
@@ -126,13 +140,13 @@
           prereq: false,
           time: '',
           suggested: '',
-          workload: 0
+          workload: 0,
+          lecturer: ''
         },
         courses: [],
         headers: [{text: 'CID', sortable: true, value: 'cid'}, {text: 'Name', value: 'Name'}],
         added: false,
         value: null,
-        // define options
         days: [{
           id: 'Monday',
           label: 'Monday'
@@ -236,7 +250,8 @@
           })
       },
       addCourse (course) {
-        console.log(this.prereq.length)
+        console.log(course)
+        console.log(this.selectedCourse)
         this.selectedCourse.name = course.name
         this.selectedCourse.cid = course.cid
         this.selectedCourse.credits = course.credits
@@ -259,15 +274,15 @@
         }
       },
       confirm () {
+        // TODO: Add capacity num, and save course using the same PID
         this.selectedCourse.time = this.time
         this.selectedCourse.day = this.value
         this.selectedCourse.suggested = this.sg
         this.selectedCourse.workload = this.wl
+        this.selectedCourse.lecturer = auth.currentUser.displayName
         console.log(this.selectedCourse)
-        // console.log(auth.currentUser.uid)
         db.ref('lecturers/' + auth.currentUser.uid + '/courses').push(
           this.selectedCourse)
-        // db.ref('')
         if (this.selectedCourse.suggested === 'Required') {
           db.ref('current/required').push(
             this.selectedCourse)
@@ -280,6 +295,8 @@
         }
         db.ref('current/all').push(
           this.selectedCourse)
+        this.dialog = false
+        router.push('/lectureraddcourse')
       }
     },
     firebase: function () {
@@ -287,7 +304,7 @@
       console.log(this.$store.state.major)
       return {
         courses: {
-          source: db.ref('courses/' + this.major + '/all')
+          source: db.ref('courses/' + this.$store.state.major + '/all')
         },
         lect: {
           source: db.ref('lecturers/' + auth.currentUser.uid)

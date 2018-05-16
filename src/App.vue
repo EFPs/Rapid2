@@ -103,6 +103,7 @@
         } else {
           return [
             { title: 'Sign Up', path: '/signup', icon: 'face' },
+            { title: 'Lecturer Sign Up', path: '/sl', icon: 'face' },
             { title: 'Sign In', path: '/signin', icon: 'lock_open' }
           ]
         }
