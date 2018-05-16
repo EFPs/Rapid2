@@ -92,7 +92,8 @@
           return [
             { title: 'Home', path: '/home', icon: 'home' },
             { title: 'Profile', path: '/profile', icon: 'face' },
-            { title: 'Add Courses', path: '/setup', icon: 'home' }
+            { title: 'Add Courses', path: '/setup', icon: 'home' },
+            { title: 'Dashboard', path: '/dashboard', icon: 'D' }
           ]
         } else if (this.isAuthenticated && this.isLecturer) {
           return [

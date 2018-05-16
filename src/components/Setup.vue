@@ -36,7 +36,7 @@
               <template slot="items" slot-scope="props">
                 <td>{{ props.item.cid }}</td>
                 <td class="text-xs-left">{{ props.item.name }}</td>
-                <v-btn v-on:click.native ="addCourses( props.item )">ADD</v-btn>
+                <v-btn v-on:click.native ="()=>{addCourses( props.item )}">ADD</v-btn>
               </template>
 
               <v-alert slot= 'no-results' :value="true" color="error" icon="warning">

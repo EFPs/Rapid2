@@ -27,7 +27,7 @@
                 <template slot="items" slot-scope="props">
                   <td>{{ props.item.cid }}</td>
                   <td class="text-xs-left">{{ props.item.name }}</td>
-                  <td class="text-xs-left">{{ props.item.date }}</td>
+                  <td class="text-xs-left">{{ props.item.day }}</td>
                   <td class="text-xs-left">{{ props.item.time }}</td>
                   <v-btn v-on:click.native ="addCourses( props.item )">ADD</v-btn>
                 </template>
@@ -63,7 +63,7 @@
                 <template slot="items" slot-scope="props">
                   <td>{{ props.item.cid }}</td>
                   <td class="text-xs-left">{{ props.item.name }}</td>
-                  <td class="text-xs-left">{{ props.item.date }}</td>
+                  <td class="text-xs-left">{{ props.item.day }}</td>
                   <td class="text-xs-left">{{ props.item.time }}</td>
                   <v-btn v-on:click.native ="addCourses( props.item )">ADD</v-btn>
                 </template>
@@ -99,7 +99,7 @@
                 <template slot="items" slot-scope="props">
                   <td>{{ props.item.cid }}</td>
                   <td class="text-xs-left">{{ props.item.name }}</td>
-                  <td class="text-xs-left">{{ props.item.date }}</td>
+                  <td class="text-xs-left">{{ props.item.day }}</td>
                   <td class="text-xs-left">{{ props.item.time }}</td>
                   <v-btn v-on:click.native ="addCourses( props.item )">ADD</v-btn>
                 </template>
@@ -114,7 +114,12 @@
       </v-flex>
       <v-flex xs9>
         <h1>C2</h1>
+<!---->
+
+<!---->
       </v-flex>
+
+
       <v-btn @click.native="a">asdasd</v-btn>
 
     </v-layout>
@@ -128,7 +133,7 @@
     data () {
       return {
         user: auth.currentUser,
-        headers: [ {text: 'CID', sortable: true, value: 'cid'}, {text: 'Name', value: 'name'}, {text: 'Date', value: 'date'}, {text: 'Time', value: 'time'} ],
+        headers: [ {text: 'CID', sortable: true, value: 'cid'}, {text: 'Name', value: 'name'}, {text: 'Date', value: 'day'}, {text: 'Time', value: 'time'} ],
         suggest: [],
         suggestSearch: '',
         all: [],
@@ -137,83 +142,84 @@
         requiredSearch: '',
         yearly: [],
         yearlySearch: '',
-        major: 'none'
+        major: 'none',
+        workLoadLv: 0,
+        register: []
       }
     },
-    firebase () {
+    firebase: function () {
       return {
-        userTakenCourses: db.ref('users/' + this.user.uid + '/takenCourses'),
-        all: db.ref('current'),
-        currentRequired: db.ref('current/required'),
-        currentSuggest: db.ref('current/suggested'),
-        currentYearly: db.ref('current/yearly')
-      }
-    },
-    // beforeUpdate () {
-    //   console.log(this.major)
-    //   console.log(this.userInfo)
-    //   if (this.major === 'none') {
-    //     console.log('BUpdate')
-    //     const indexMajor = this.getIndexUserInfo('major')
-    //     this.major = this.userInfo[indexMajor]['.value']
-    //     console.log('major', this.userInfo[indexMajor]['.value'])
-    //   }
-    // },
-    // updated () {
-    //   console.log(this.major)
-    //   console.log(this.userInfo)
-    //   if (this.major === 'none') {
-    //     console.log('Update')
-    //     const indexMajor = this.getIndexUserInfo('major')
-    //     this.major = this.userInfo[indexMajor]['.value']
-    //     console.log('major', this.userInfo[indexMajor]['.value'])
-    //   }
-    // },
-    mounted () {
-      console.log('Mounted')
-      console.log('currentOpen ', this.currentRequired)
-      console.log('taken ', this.userTakenCourses)
-      console.log(this.required, this.yearly, this.suggest)
-      console.log(this.currentRequired[0].prereq)
-      // get require course
-      let currentCourse
-      for (currentCourse in this.currentRequired) {
-        // See if user already taken this course
-        if (this.userTakenCourses.filter(c => c.cid === currentCourse.cid).length === 0) {
-          // if not, see if this course have prereq
-          if (currentCourse.prereq) {
-            // if have, Check if the user taken those course yet.
-            const preqCourses = currentCourse.prec
-            let pCourse
-            let allClear = false
-            for (pCourse in preqCourses) {
-              allClear = true
-              if (!this.userTakenCourses.some(c => c.cid === pCourse.cid)) {
-                allClear = false
-              }
-            }
-            // If all preq course taken
-            if (allClear) {
-              // Add to array
-              this.required.push(currentCourse)
-            }
-          }
-          // Add course
+        userTakenCourses: {
+          source: db.ref('users/' + this.user.uid + '/takenCourses')
+        },
+        all: {
+          source: db.ref('current/all')
+        },
+        register: {
+          source: db.ref('users/' + this.user.uid + '/register')
         }
       }
-      // console.log(this.major)
-      // console.log(this.userInfo)
-      // if (this.major === 'none') {
-      //   console.log('Mounted')
-      //   const indexMajor = this.getIndexUserInfo('major')
-      //   this.major = this.userInfo[indexMajor]['.value']
-      //   console.log('major', this.major)
-      // }
     },
     methods: {
-      a () {
-        console.log('major', this.major)
-        console.log(this.userInfo)
+      removeCourses (c){
+
+      },
+      addCourses (c) {
+        c.open = true
+        delete c['.key']
+        db.ref('users/' + this.user.uid + '/register/' + c.cid).set(c)
+      },
+      courseExists (courseList, course) {
+        // return true
+        return courseList.some(c => c.cid === course.cid)
+      },
+      setDisplayArray () {
+        // get require course
+        let currentCourse
+        let indexC
+        let indexP
+        let userTakenP = false
+        for (indexC = 0; indexC < this.all.length; indexC++) {
+          currentCourse = this.all[indexC]
+          console.log('Course ', currentCourse)
+          // See if user already taken this course
+          if (this.userTakenCourses.filter(c => c.cid === currentCourse.cid).length === 0) {
+            // if not, see if this course have prereq
+            console.log('this course have prereq ? ', currentCourse.prereq)
+            if (currentCourse.prereq) {
+              // if have, Check if the user taken those course yet.
+              const preqCourses = currentCourse.prec
+              let pCourse
+              for (indexP in preqCourses) {
+                pCourse = preqCourses[indexP]
+                console.log('prereq Course : ', pCourse)
+                if (this.userTakenCourses.some(c => c.cid === pCourse)) {
+                  userTakenP = true
+                  console.log('user taken prereq', userTakenP)
+                }
+              }
+              // If all preq course taken
+            }
+            if (userTakenP || !currentCourse.prereq) {
+              // Add to array
+              console.log('All clear Add course', currentCourse)
+              if (currentCourse.type === 'Required' && !this.courseExists(this.required, currentCourse)) {
+                console.log('type Required')
+                this.required.push(currentCourse)
+              } else if (currentCourse.type === 'Suggested by advisor' && !this.courseExists(this.suggest, currentCourse)) {
+                console.log('type Suggested by adviser')
+                this.suggest.push(currentCourse)
+              } else if (currentCourse.type === 'Once a year' && !this.courseExists(this.yearly, currentCourse)) {
+                console.log('type Once a year')
+                this.yearly.push(currentCourse)
+              } else {
+                console.log('Course existed in list')
+              }
+            }
+          }
+          // console.log('User taken this course already')
+        }
+        // console.log('All courses considered')
       },
       getIndexUserInfo (key) {
         let i = 0
@@ -236,6 +242,24 @@
     },
     // What to do when velue change
     watch: {
+      register () {
+        console.log('Changes in Register')
+        // let indexC
+        // for (indexC in this.register) {
+        //   const course = this.register[indexC]
+        //   if (!course.open) {
+        //     window.alert(course.cid + course.name + ' has been cancel by the lecturer.')
+        //     this.$firebaseRefs.register.child(course.cid).remove()
+        //   }
+        // }
+      },
+      all () {
+        console.log(this.all)
+        console.log('Changes in All')
+        if (this.all !== 'undefined') {
+          this.setDisplayArray()
+        }
+      },
       error (value) {
         if (value) {
           this.alert = true

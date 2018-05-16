@@ -63,6 +63,7 @@
             </v-flex>
             <v-flex xs6>
               <v-select
+                transition="slide-y-reverse-transition"
                 name="major"
                 :items="majors"
                 v-model="major"

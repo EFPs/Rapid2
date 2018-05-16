@@ -7,6 +7,7 @@ import { store } from './store'
 import firebase from './firebase'
 import VueFire from 'vuefire'
 import CGrid from 'vue-cheetah-grid'
+// import Schedule from 'vue-schedule'
 /* eslint-disable */
 Vue.use(Vuetify, {
   theme: {
@@ -32,7 +33,8 @@ Vue.use(Vuetify, {
 })
 
 Vue.use(VueFire);
-Vue.use(CGrid)
+Vue.use(CGrid);
+// Vue.use(Schedule);
 
 Vue.config.productionTip = false
 

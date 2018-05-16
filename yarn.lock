@@ -6506,6 +6506,12 @@ vue-router@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-3.0.1.tgz#d9b05ad9c7420ba0f626d6500d693e60092cc1e9"
 
+vue-schedule@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/vue-schedule/-/vue-schedule-2.0.3.tgz#4ac276f5f591509d614f295481b1a14c68283d94"
+  dependencies:
+    vue "^2.3.3"
+
 vue-smooth-dnd@^0.1.5:
   version "0.1.5"
   resolved "https://registry.yarnpkg.com/vue-smooth-dnd/-/vue-smooth-dnd-0.1.5.tgz#cd938d11cd25432206691f2f31af820f99c0d774"
@@ -6542,7 +6548,7 @@ vue-worker@^1.2.1:
   dependencies:
     simple-web-worker "1.2.0"
 
-vue@^2.5.2:
+vue@^2.3.3, vue@^2.5.2:
   version "2.5.16"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.5.16.tgz#07edb75e8412aaeed871ebafa99f4672584a0085"
 
