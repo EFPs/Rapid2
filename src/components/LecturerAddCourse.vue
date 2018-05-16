@@ -4,7 +4,7 @@
     <v-layout row wrap >
       <v-flex xs12 sm12 md12 ls12>
 
-        <h1 style="color: white; background-color: rgba(0,0,0,0.7)">List of all courses</h1>
+        <h3 style="color: white; background-color: rgba(0,0,0,0.7)">List of all courses</h3>
         <v-card dark>
           <v-card-title>
             All {{  }} Courses.<br/>
@@ -38,8 +38,8 @@
     </v-layout>
   </v-layout>
 
-    <h1 style="color: white; background-color: rgba(0,0,0,0.7)"> Selected course : {{ this.display }}</h1>
-    <h2 style="color: white; background-color: rgba(0,0,0,0.7)">Choose day(s)</h2>
+    <h2 style="color: white; background-color: rgba(0,0,0,0.7)"> Selected course : {{ this.display }}</h2>
+    <h3 style="color: white; background-color: rgba(0,0,0,0.7)">Choose day(s)</h3>
       <treeselect style="background: #3e2723"
         name="demo"
         :multiple=true
@@ -52,7 +52,7 @@
         v-model="value"
       />
 
-    <h2 style="color: white; background-color: rgba(0,0,0,0.7)">Choose time</h2>
+    <h4 style="color: white; background-color: rgba(0,0,0,0.7)">Choose time</h4>
     <treeselect
       name="demo"
       :multiple=false
@@ -62,21 +62,22 @@
       :options="timeSelect"
       :max-height="200"
       v-model="time"
+      dark
     />
 
-    <h2 style="color: white; background-color: rgba(0,0,0,0.7)">Extra spice and everything nice</h2>
+    <h3 style="color: white; background-color: rgba(0,0,0,0.7)">Extra spice and everything nice</h3>
     <treeselect
       name="demo"
       :multiple=false
       :clearable=true
       :open-on-click=true
       :clear-on-select=true
-      :options="suggested"
+      :options="type"
       :max-height="200"
       v-model="sg"
     />
 
-    <h2 style="color: white; background-color: rgba(0,0,0,0.7)">On a scale of 1 to 5, what's the workload level</h2>
+    <h3 style="color: white; background-color: rgba(0,0,0,0.7)">On a scale of 1 to 5, what's the workload level</h3>
     <treeselect
       name="demo"
       :multiple=false
@@ -88,17 +89,33 @@
       v-model="wl"
     />
 
+    <v-form @submit.prevent="confirm">
+    <v-layout column :style="{'background-color': 'rgba(0,0,0,0.5)', 'border-radius': '15px'}">
+      <v-flex >
+        <v-text-field
+          name="course capacity"
+          label="Course capacity"
+          v-model="cap"
+          id="cap"
+          dark
+          color="primary"
+          required></v-text-field>
+      </v-flex>
 
+    </v-layout>
+    </v-form>
     <v-flex class="text-xs-center" mt-5>
-      <v-btn large color="primary" type="submit" @click.native.stop="dialog = true">confirm</v-btn>
+      <v-btn large color="primary" type="submit" @click.native.stop="dialog = true"
+             :loading="loading"
+             :disabled="loading">confirm</v-btn>
       <v-dialog v-model="dialog" max-width="290">
         <v-card>
           <v-card-title class="headline">You're about to add {{this.selectedCourse.name}}</v-card-title>
-          <v-card-text> text </v-card-text>
+          <v-card-text> Please double check all the fields before submit </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="green darken-1" flat="flat" @click.native="dialog = false">Disagree</v-btn>
-            <v-btn color="green darken-1" flat="flat" v-on:click="confirm">Agree</v-btn>
+            <v-btn color="green darken-1" flat="flat" @click.native="dialog = false">Let me check again</v-btn>
+            <v-btn color="green darken-1" flat="flat" v-on:click="confirm">Publish</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -129,6 +146,7 @@
         time: '',
         sg: '',
         wl: 0,
+        cap: 0,
         searchCourses: '',
         searchTaken: '',
         selectedCourse: {
@@ -139,9 +157,10 @@
           prec: [],
           prereq: false,
           time: '',
-          suggested: '',
+          type: '',
           workload: 0,
-          lecturer: ''
+          lecturer: '',
+          capacity: 0
         },
         courses: [],
         headers: [{text: 'CID', sortable: true, value: 'cid'}, {text: 'Name', value: 'Name'}],
@@ -185,7 +204,7 @@
           id: 5,
           label: 'No life'
         }],
-        suggested: [{
+        type: [{
           id: 'Required',
           label: 'Required'
         }, {
@@ -240,9 +259,10 @@
         return this.$store.state.loading
       }
     },
+    mounted () {
+    },
     methods: {
       getMajor () {
-        console.log('in get major')
         return db.ref('lecturers/' + auth.currentUser.uid)
           .once('value').then(function (snapshot) {
             console.log(snapshot.val().major.toLowerCase())
@@ -250,23 +270,27 @@
           })
       },
       addCourse (course) {
-        console.log(course)
-        console.log(this.selectedCourse)
         this.selectedCourse.name = course.name
         this.selectedCourse.cid = course.cid
         this.selectedCourse.credits = course.credits
         this.cname = course.name
         if (typeof course.prereq === 'undefined') {
-          // console.log('undefined from if ')
           var found = false
           let a
           for (a = 0; a < this.prereq.length; a++) {
             if (this.prereq[a]['.key'] === course.cid) {
               found = true
               this.selectedCourse.prec = this.prereq[a].condition
-              console.log(this.selectedCourse.prec)
             }
           }
+          this.$firebaseRefs.courses.child(course['.key']).update({
+            'prereq': found,
+            'prec': this.selectedCourse.prec}
+          )
+          this.$firebaseRefs.all.child(course['.key']).update({
+            'prereq': found,
+            'prec': this.selectedCourse.prec}
+          )
           this.selectedCourse.prereq = found
         } else {
           this.selectedCourse.prereq = course.prereq
@@ -274,37 +298,41 @@
         }
       },
       confirm () {
-        // TODO: Add capacity num, and save course using the same PID
+        this.selectedCourse.capacity = parseInt(this.cap)
         this.selectedCourse.time = this.time
         this.selectedCourse.day = this.value
-        this.selectedCourse.suggested = this.sg
+        this.selectedCourse.type = this.sg
         this.selectedCourse.workload = this.wl
         this.selectedCourse.lecturer = auth.currentUser.displayName
-        console.log(this.selectedCourse)
-        db.ref('lecturers/' + auth.currentUser.uid + '/courses').push(
-          this.selectedCourse)
-        if (this.selectedCourse.suggested === 'Required') {
-          db.ref('current/required').push(
-            this.selectedCourse)
-        } else if (this.selectedCourse.suggested === 'Suggested by advisor') {
-          db.ref('current/suggested').push(
-            this.selectedCourse)
-        } else if (this.selectedCourse.suggested === 'Once a year') {
-          db.ref('current/yearly').push(
-            this.selectedCourse)
-        }
-        db.ref('current/all').push(
-          this.selectedCourse)
         this.dialog = false
+        const key = db.ref('lecturers/' + auth.currentUser.uid + '/courses').push(
+          this.selectedCourse).getKey()
+        console.log(key)
+        db.ref('current/all/' + key).set(this.selectedCourse)
         router.push('/lectureraddcourse')
+        this.reset()
       }
+    },
+    reset: function () {
+      this.selectedCourse.cid = ''
+      this.selectedCourse.credits = ''
+      this.selectedCourse.day = []
+      this.selectedCourse.prec = []
+      this.selectedCourse.prereq = false
+      this.selectedCourse.time = ''
+      this.selectedCourse.type = ''
+      this.selectedCourse.workload = 0
+      this.selectedCourse.lecturer = ''
+      this.selectedCourse.capacity = 0
     },
     firebase: function () {
       this.$store.dispatch('getMajor')
-      console.log(this.$store.state.major)
       return {
         courses: {
           source: db.ref('courses/' + this.$store.state.major + '/all')
+        },
+        all: {
+          source: db.ref('courses/all')
         },
         lect: {
           source: db.ref('lecturers/' + auth.currentUser.uid)
@@ -334,6 +362,12 @@
       },
       time: function () {
         console.log(this.time)
+      },
+      errmsg: function () {
+        console.log(this.errmsg)
+      },
+      'this.selectedCourse': function (newVal, oldVal) {
+        console.log(this.selectedCourse)
       }
     }
   }

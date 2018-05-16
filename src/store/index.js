@@ -69,6 +69,12 @@ export const store = new Vuex.Store({
         commit('setUser', {email: firebaseUser.email})
         commit('setLoading', false)
         commit('setError', null)
+        db.ref('lecturers/' + this.state.user.uid)
+          .once('value').then(function (snapshot) {
+            console.log(snapshot.val().major)
+            console.log(snapshot.val().major.toLowerCase())
+            commit('setMajor', snapshot.val().major.toLowerCase())
+          })
         router.push('/home')
       })
       .catch(error => {
@@ -77,8 +83,13 @@ export const store = new Vuex.Store({
       })
     },
     autoSignIn ({commit}, payload) {
-      // commit('setUser', {email: payload.email})
       commit('setUser', payload)
+      db.ref('lecturers/' + this.state.user.uid)
+          .once('value').then(function (snapshot) {
+            console.log(snapshot.val().major)
+            console.log(snapshot.val().major.toLowerCase())
+            commit('setMajor', snapshot.val().major.toLowerCase())
+          })
       console.log('From Store User', this.state.user, payload)
     },
     userSignOut ({commit}) {

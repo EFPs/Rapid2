@@ -49,8 +49,6 @@
       <v-flex class="text-xs-center" mt-5>
         <v-btn dark true v-on:click="skySignIn" color="facebook" type="submit" disabled="true">Sign In using Sky</v-btn>
         <v-btn dark true v-on:click="forgetPassword" color="google" type="submit">I Forgot My Password !!</v-btn>
-        <!--<v-btn dark true v-on:click="facebookSignIn" color="facebook" type="submit">Sign In using Facebook</v-btn>-->
-        <!--<v-btn dark true v-on:click="googleSignIn" color="google" type="submit">Sign In using Google</v-btn>-->
       </v-flex>
     </v-layout>
   </v-container>

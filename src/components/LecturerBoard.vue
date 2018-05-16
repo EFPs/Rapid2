@@ -28,7 +28,9 @@
                 <td class="text-xs-left">{{ props.item.name }}</td>
                 <td>{{ props.item.day }}</td>
                 <td>{{ props.item.time }}</td>
-                <!--<v-btn v-on:click.native ="addCourse( props.item )">Select</v-btn>-->
+                <td>{{ props.item.capacity }}</td>
+                <v-btn icon class="mx-0"> <delete-icon v-on:click.native ="remove( props.item )" /> </v-btn>
+                <v-btn icon class="mx-0"> <delete-icon v-on:click.native ="remove( props.item )" /> </v-btn>
               </template>
               <v-alert slot= 'no-results' :value="true" color="error" icon="warning">
                 Your search for "{{ searchCourses }}" found no results.
@@ -49,14 +51,22 @@
     name: 'Sample',
     data () {
       return {
-        headers: [{text: 'CID', sortable: true, value: 'cid'}, {text: 'Name', value: 'name'}, {text: 'Day', value: 'day'}, {text: 'Time', value: 'time'}]
+        searchCourses: '',
+        headers: [{text: 'CID', sortable: true, value: 'cid'}, {text: 'Name', value: 'name'}, {text: 'Day', value: 'day'}, {text: 'Time', value: 'time'},
+          {text: 'Capacity', value: 'capacity'}]
       }
     },
+    mounted () {
+      console.log('length' + this.all.length)
+    },
     methods: {
+      remove (course) {
+        this.$firebaseRefs.lect.child(course['.key']).remove()
+        this.$firebaseRefs.all.child(course['.key']).remove()
+      }
     },
     firebase: function () {
       this.$store.dispatch('getMajor')
-      console.log(this.$store.state.major)
       return {
         courses: {
           source: db.ref('courses/' + this.major + '/all')
@@ -64,8 +74,8 @@
         lect: {
           source: db.ref('lecturers/' + auth.currentUser.uid + '/courses')
         },
-        prereq: {
-          source: db.ref('prereq/' + this.major)
+        all: {
+          source: db.ref('current/all')
         }
       }
     }

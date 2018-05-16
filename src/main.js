@@ -7,6 +7,10 @@ import { store } from './store'
 import firebase from './firebase'
 import VueFire from 'vuefire'
 import CGrid from 'vue-cheetah-grid'
+import 'vue-material-design-icons/styles.css'
+import MenuIcon from 'vue-material-design-icons/menu.vue'
+import DeleteIcon from 'vue-material-design-icons/delete.vue'
+
 /* eslint-disable */
 Vue.use(Vuetify, {
   theme: {
@@ -32,7 +36,9 @@ Vue.use(Vuetify, {
 })
 
 Vue.use(VueFire);
-Vue.use(CGrid)
+Vue.use(CGrid);
+Vue.component("menu-icon", MenuIcon)
+Vue.component("delete-icon", DeleteIcon)
 
 Vue.config.productionTip = false
 
