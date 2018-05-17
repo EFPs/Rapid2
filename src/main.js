@@ -7,7 +7,10 @@ import { store } from './store'
 import firebase from './firebase'
 import VueFire from 'vuefire'
 import CGrid from 'vue-cheetah-grid'
-// import Schedule from 'vue-schedule'
+import Autocomplete from 'v-autocomplete'
+import 'v-autocomplete/dist/v-autocomplete.css'
+// import Schedule from 'vue-schedule.min.js'
+// import ECharts from 'echarts'
 /* eslint-disable */
 Vue.use(Vuetify, {
   theme: {
@@ -34,6 +37,8 @@ Vue.use(Vuetify, {
 
 Vue.use(VueFire);
 Vue.use(CGrid);
+Vue.use(Autocomplete);
+// Vue.use(ECharts);
 // Vue.use(Schedule);
 
 Vue.config.productionTip = false

@@ -69,7 +69,7 @@ export const store = new Vuex.Store({
         commit('setUser', {email: firebaseUser.email})
         commit('setLoading', false)
         commit('setError', null)
-        router.push('/home')
+        router.push('/dashboard')
       })
       .catch(error => {
         commit('setError', error.message)
