@@ -65,7 +65,7 @@
     </v-layout>
 
 
-    <cal></cal>
+    <!--<cal></cal>-->
 
   </v-container>
 
@@ -73,10 +73,10 @@
 
 <script>
   import {auth, db} from '../firebase'
-  import cal from './calendar'
+  // import cal from './calendar'
   export default {
     name: 'Sample',
-    components: { cal },
+    // components: { cal },
     data () {
       return {
         dialog: false,
