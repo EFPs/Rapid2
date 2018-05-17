@@ -10,7 +10,7 @@ import CGrid from 'vue-cheetah-grid'
 import 'vue-material-design-icons/styles.css'
 import MenuIcon from 'vue-material-design-icons/menu.vue'
 import DeleteIcon from 'vue-material-design-icons/delete.vue'
-
+import FolderAccountIcon from 'vue-material-design-icons/folder-account.vue'
 /* eslint-disable */
 Vue.use(Vuetify, {
   theme: {
@@ -39,6 +39,7 @@ Vue.use(VueFire);
 Vue.use(CGrid);
 Vue.component("menu-icon", MenuIcon)
 Vue.component("delete-icon", DeleteIcon)
+Vue.component("folder-account-icon", FolderAccountIcon)
 
 Vue.config.productionTip = false
 

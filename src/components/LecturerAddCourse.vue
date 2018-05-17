@@ -160,7 +160,8 @@
           type: '',
           workload: 0,
           lecturer: '',
-          capacity: 0
+          capacity: 0,
+          open: true
         },
         courses: [],
         headers: [{text: 'CID', sortable: true, value: 'cid'}, {text: 'Name', value: 'Name'}],
@@ -221,31 +222,31 @@
           id: '2',
           label: 'Two hour',
           children: [{
-            id: '8:00 - 10:00',
+            id: ['8:00 - 10:00'],
             label: '8:00 - 10:00'
           }, {
-            id: '10:00 - 12:00',
+            id: ['10:00 - 12:00'],
             label: '10:00 - 12:00'
           }, {
-            id: '12:00 - 14:00',
+            id: ['12:00 - 14:00'],
             label: '12:00 - 14:00'
           }, {
-            id: '14:00 - 16:00',
+            id: ['14:00 - 16:00'],
             label: '14:00 - 16:00'
           }, {
-            id: '16:00 - 18:00',
+            id: ['16:00 - 18:00'],
             label: '18:00 - 20:00'
           } ]
         }, {id: '4',
           label: 'Four hour',
           children: [{
-            id: '8:00 - 12:00',
+            id: ['8:00 - 10:00', '10:00 - 12:00'],
             label: '8:00 - 12:00'
           }, {
-            id: '12:00 - 16:00',
-            label: '16:00 - 20:00'
+            id: ['12:00 - 14:00', '14:00 - 16:00'],
+            label: '12:00 - 16:00'
           }, {
-            id: '16:00 - 20:00',
+            id: ['16:00 - 18:00', '18:00 - 20:00'],
             label: '16:00 - 20:00'
           }]
         }]
@@ -305,25 +306,24 @@
         this.selectedCourse.workload = this.wl
         this.selectedCourse.lecturer = auth.currentUser.displayName
         this.dialog = false
-        const key = db.ref('lecturers/' + auth.currentUser.uid + '/courses').push(
-          this.selectedCourse).getKey()
-        console.log(key)
-        db.ref('current/all/' + key).set(this.selectedCourse)
+        const key = db.ref('current/all').push(this.selectedCourse).getKey()
+        db.ref('lecturers/' + auth.currentUser.uid + '/courses/' + key).set(
+          key)
         router.push('/lectureraddcourse')
         this.reset()
+      },
+      reset () {
+        this.selectedCourse.cid = ''
+        this.selectedCourse.credits = ''
+        this.selectedCourse.day = []
+        this.selectedCourse.prec = []
+        this.selectedCourse.prereq = false
+        this.selectedCourse.time = ''
+        this.selectedCourse.type = ''
+        this.selectedCourse.workload = 0
+        this.selectedCourse.lecturer = ''
+        this.selectedCourse.capacity = 0
       }
-    },
-    reset: function () {
-      this.selectedCourse.cid = ''
-      this.selectedCourse.credits = ''
-      this.selectedCourse.day = []
-      this.selectedCourse.prec = []
-      this.selectedCourse.prereq = false
-      this.selectedCourse.time = ''
-      this.selectedCourse.type = ''
-      this.selectedCourse.workload = 0
-      this.selectedCourse.lecturer = ''
-      this.selectedCourse.capacity = 0
     },
     firebase: function () {
       this.$store.dispatch('getMajor')
