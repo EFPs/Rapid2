@@ -1,95 +1,165 @@
 <template>
-  <div class="sample">
-    <c-grid
-      ref="grid"
-      :data="data"
-      :frozen-col-count="1">
-      <c-grid-column
-        :width="50"
-        field="check"
-        column-type="check"
-        action="check"/>
-      <c-grid-column
-        field="id"
-        width="85">
-        ID
-      </c-grid-column>
-      <c-grid-column-group caption="GROUP">
-        <c-grid-button-column
-          caption="BUTTON"
-          width="100"
-          @click="onClick">
-          BUTTON
-        </c-grid-button-column>
-        <c-grid-icon-column
-          field="stars"
-          icon-name="star"
-          width="75">
-          ICON
-        </c-grid-icon-column>
-      </c-grid-column-group>
-      <c-grid-input-column
-        :width="75"
-        field="text">
-        INPUT
-      </c-grid-input-column>
-      <c-grid-link-column
-        :width="75"
-        :href="onLink"
-        field="link">
-        LINK
-      </c-grid-link-column>
-      <c-grid-menu-column
-        :width="75"
-        :options="[
-          {value: '', caption: 'Empty'},
-          {value: 1, caption:'Opt1'},
-          {value: 2, caption:'Opt2'}
-        ]"
-        field="menu">
-        MENU
-      </c-grid-menu-column>
-      <c-grid-percent-complete-bar-column
-        :width="90"
-        field="percent">
-        PERCENT
-      </c-grid-percent-complete-bar-column>
-    </c-grid>
-  </div>
+  <v-container fluid>
+    <v-layout row wrap align-center>
+      <v-layout row wrap >
+        <v-flex xs12 sm12 md12 ls12>
+
+          <h3 style="color: white; background-color: rgba(0,0,0,0.7)">Your courses</h3>
+          <v-card dark>
+            <v-card-title>
+              All {{  }} Courses.<br/>
+              <v-spacer></v-spacer>
+              <v-text-field
+                v-model="searchCourses"
+                append-icon="search"
+                label="Search"
+                single-line
+                hide-details
+              ></v-text-field>
+            </v-card-title>
+            <v-data-table
+              v-model="searchCourses"
+              :headers="headers"
+              :items="lectcourse"
+              :search="searchCourses"
+            >
+              <template slot="items" slot-scope="props">
+                <td>{{ props.item.cid }}</td>
+                <td class="text-xs-left">{{ props.item.name }}</td>
+                <td>{{ props.item.day }}</td>
+                <td>{{ props.item.time }}</td>
+                <td>{{ props.item.capacity }}</td>
+                <td>{{ props.item.students !== undefined ? props.item.students.length : 0 }}</td>
+                <v-btn icon class="mx-0" @click.native.stop="dialog = true; studentsList = props.item.students"> <folder-account-icon /> </v-btn>
+                <v-btn icon class="mx-0"> <delete-icon v-on:click.native ="remove( props.item )" /> </v-btn>
+              </template>
+              <v-alert slot= 'no-results' :value="true" color="error" icon="warning">
+                Your search for "{{ searchCourses }}" found no results.
+              </v-alert>
+            </v-data-table>
+          </v-card>
+
+        </v-flex>
+      </v-layout>
+    </v-layout>
+
+
+    <v-layout row justify-center>
+      <v-dialog v-model="dialog" scrollable max-width="300px">
+        <v-card>
+          <v-card-title>Preregistered students</v-card-title>
+          <v-divider></v-divider>
+          <v-list dense>
+            <v-list-tile v-for="student in studentsList" >
+              <v-list-tile-content v-text="student"> </v-list-tile-content>
+            </v-list-tile>
+            </v-list>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <div class="text-xs-center">
+            <v-btn class="align-end" color="blue darken-1" flat @click.native="dialog = false">Close</v-btn>
+            </div>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-layout>
+
+
+    <!--<cal></cal>-->
+
+  </v-container>
+
 </template>
 
 <script>
+  import {auth, db} from '../firebase'
+  // import cal from './calendar'
   export default {
     name: 'Sample',
+    // components: { cal },
     data () {
       return {
-        data: [
-          {check: true, id: 1, stars: 1, text: 'text', link: 'link', menu: '', percent: 10},
-          {check: false, id: 2, stars: 2, text: 'text', link: 'link', menu: 1, percent: 50},
-          {check: true, id: 3, stars: 3, text: 'text', link: 'link', menu: 2, percent: 13 / 20 * 100}
-        ]
+        dialog: false,
+        all: [],
+        lect: [],
+        studentsList: [],
+        searchCourses: '',
+        headers: [{text: 'CID', sortable: true, value: 'cid'}, {text: 'Name', value: 'name'}, {text: 'Day', value: 'day'}, {text: 'Time', value: 'time'},
+          {text: 'Capacity', value: 'capacity'}, {text: 'Taken', value: 'taken'}]
+      }
+    },
+    mounted () {
+      let temp = []
+      for (let l = 0; l < this.all.length; l++) {
+        // console.log('looping: ', this.all[l]['.key'])
+        for (let j = 0; j < this.lect.length; j++) {
+          // console.log(this.lect[j])
+          if (this.lect[j]['.value'] === this.all[l]['.key']) {
+            console.log('found key :', this.all[l]['.key'])
+            console.log(this.all[l])
+            // const key = this.all[l]['.key']
+            temp.push(this.all[l])
+          }
+        }
+      }
+      this.lectcourse = temp
+    },
+    computed: {
+      lectcourse () {
+        return this.update()
       }
     },
     methods: {
-      onClick (rec) {
-        console.log('click!!', rec)
-        return 'click!'
+      showlist (course) {
+        if (typeof course.students === 'undefined') {
+        }
       },
-      onLink (rec) {
-        console.log('link!!', rec)
-        return 'link!'
+      remove (course) {
+        this.$firebaseRefs.lect.child(course['.key']).remove()
+        console.log('after delete')
+        db.ref('current/all/' + course['.key']).update({open: false})
+        // this.$firebaseRefs.all.child(course['.key']).remove()
+      },
+      update () {
+        let temp = []
+        console.log(this.all)
+        for (let l = 0; l < this.all.length; l++) {
+          // console.log('looping: ', this.all[l]['.key'])
+          for (let j = 0; j < this.lect.length; j++) {
+            // console.log(this.lect[j])
+            if (this.lect[j]['.value'] === this.all[l]['.key']) {
+              console.log('found key :', this.all[l]['.key'])
+              console.log(this.all[l])
+              // const key = this.all[l]['.key']
+              temp.push(this.all[l])
+            }
+          }
+        }
+        return temp
+      }
+    },
+    watch: {
+      studentsList: function () {
+        // console.log(this.studentsList)
+        // console.log(this.studentsList.length)
+      }
+    },
+    firebase: function () {
+      this.$store.dispatch('getMajor')
+      return {
+        courses: {
+          source: db.ref('courses/' + this.$store.state.major + '/all')
+        },
+        lect: {
+          source: db.ref('lecturers/' + auth.currentUser.uid + '/courses')
+        },
+        all: {
+          source: db.ref('current/all')
+        }
       }
     }
   }
 </script>
 
 <style scoped>
-  .sample {
-    height: 800px;
-    width: 100%;
-  }
 </style>
-
-<!--<style scoped>-->
-
-<!--</style>-->

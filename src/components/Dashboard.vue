@@ -141,7 +141,7 @@
           <v-btn @click.native="() => {addCourses(allChosen)}" medium color="success" dark>ADD</v-btn>
         </div>
         <div style="background-color: rgba(6, 128, 249,0.7)">
-          <h2 style="color: white; ">Search All Available Courses</h2>
+          <h2 style="color: white; ">Search Course You Want To Remove</h2>
           <v-select
             max-height=200
             style="background-color: rgba(0,0,0,0.7)"
@@ -149,7 +149,7 @@
             :items="addedCourses"
             :filter="addedFilter"
             v-model="addedChosen"
-            label="Select available course by ID or by name."
+            label="Select added course by ID or by name."
             item-text="name"
             autocomplete
           ></v-select>
@@ -339,12 +339,6 @@
       }
     },
     methods: {
-      a () {
-        console.log(this.addedCourses)
-      },
-      b () {
-        this.removeCourses('-LCh13zTxfbb02UUAHEr')
-      },
       allFilter (item, queryText, itemText) {
         // console.log(item, queryText, itemText)
         const hasValue = val => val != null ? val : ''

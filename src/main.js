@@ -7,8 +7,10 @@ import { store } from './store'
 import firebase from './firebase'
 import VueFire from 'vuefire'
 import CGrid from 'vue-cheetah-grid'
-// import Schedule from 'vue-schedule.min.js'
-// import ECharts from 'echarts'
+import 'vue-material-design-icons/styles.css'
+import MenuIcon from 'vue-material-design-icons/menu.vue'
+import DeleteIcon from 'vue-material-design-icons/delete.vue'
+import FolderAccountIcon from 'vue-material-design-icons/folder-account.vue'
 /* eslint-disable */
 Vue.use(Vuetify, {
   theme: {
@@ -35,8 +37,9 @@ Vue.use(Vuetify, {
 
 Vue.use(VueFire);
 Vue.use(CGrid);
-// Vue.use(ECharts);
-// Vue.use(Schedule);
+Vue.component("menu-icon", MenuIcon)
+Vue.component("delete-icon", DeleteIcon)
+Vue.component("folder-account-icon", FolderAccountIcon)
 
 Vue.config.productionTip = false
 

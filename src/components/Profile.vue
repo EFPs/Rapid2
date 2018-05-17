@@ -92,7 +92,6 @@
                 <span class="title">E-mail :    {{ this.email }}</span>
               </v-card-text>
             </v-card>
-            <v-btn v-on:click.native = 'a'> as</v-btn>
           </v-flex>
         </v-layout>
 
@@ -184,10 +183,6 @@
       }
     },
     methods: {
-      a () {
-        console.log(this.user)
-        console.log(this.userInfo)
-      },
       getIndexUserInfo (key) {
         let i = 0
         for (i = 0; i < this.userInfo.length; i++) {

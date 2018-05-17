@@ -87,18 +87,18 @@ export default new Router({
       beforeEnter: AuthGuard
     },
     {
-      path: '/sl',
+      path: '/ls',
       name: 'LecturerSignup',
       component: LecturerSignup
     },
     {
-      path: '/lecturerboard',
+      path: '/lb',
       name: 'LecturerBoard',
       component: LecturerBoard,
       beforeEnter: LectGuard
     },
     {
-      path: '/lectureraddcourse',
+      path: '/lac',
       name: 'LecturerAddCourse',
       component: LecturerAddCourse,
       beforeEnter: LectGuard

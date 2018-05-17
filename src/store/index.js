@@ -12,7 +12,8 @@ export const store = new Vuex.Store({
     user: null,
     error: null,
     loading: false,
-    major: null
+    major: null,
+    lect: false
   },
   mutations: {
     setUser (state, payload) {
@@ -26,6 +27,9 @@ export const store = new Vuex.Store({
     },
     setMajor (state, payload) {
       state.major = payload
+    },
+    setLect (state, payload) {
+      state.lect = payload
     }
   },
   actions: {
@@ -69,16 +73,29 @@ export const store = new Vuex.Store({
         commit('setUser', {email: firebaseUser.email})
         commit('setLoading', false)
         commit('setError', null)
-        router.push('/dashboard')
+        db.ref('lecturers/' + this.state.user.uid)
+          .once('value').then(function (snapshot) {
+            console.log(snapshot.val().major)
+            console.log(snapshot.val().major.toLowerCase())
+            commit('setMajor', snapshot.val().major.toLowerCase())
+          })
+        router.push('/')
+        location.reload()
       })
       .catch(error => {
         commit('setError', error.message)
         commit('setLoading', false)
       })
     },
-    autoSignIn ({commit}, payload) {
-      // commit('setUser', {email: payload.email})
+    autoSignIn ({commit}, payload){
+
       commit('setUser', payload)
+      db.ref('lecturers/' + this.state.user.uid)
+          .once('value').then(function (snapshot) {
+            console.log(snapshot.val().major)
+            console.log(snapshot.val().major.toLowerCase())
+            commit('setMajor', snapshot.val().major.toLowerCase())
+          })
       console.log('From Store User', this.state.user, payload)
     },
     userSignOut ({commit}) {
@@ -88,7 +105,7 @@ export const store = new Vuex.Store({
     },
     socialMediaSignUp ({commit}, payload) {
       commit('setUser', payload)
-      router.push('/home')
+      router.push('/')
     },
     getMajor ({commit}) {
       console.log(this.state.user.uid)
@@ -97,6 +114,13 @@ export const store = new Vuex.Store({
           console.log(snapshot.val().major)
           console.log(snapshot.val().major.toLowerCase())
           commit('setMajor', snapshot.val().major.toLowerCase())
+        })
+    },
+    getLect ({commit}) {
+      console.log(this.state.user.uid)
+      db.ref('lecturers/' + this.state.user.uid)
+        .once('value').then(function (snapshot) {
+          commit('setLect', true)
         })
     },
     lectAddCourse ({commit}, payload) {
