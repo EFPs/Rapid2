@@ -294,8 +294,13 @@
           )
           this.selectedCourse.prereq = found
         } else {
-          this.selectedCourse.prereq = course.prereq
-          this.selectedCourse.prec = course.prec
+          if (typeof course.prec === 'undefined') {
+            this.selectedCourse.prereq = course.prereq
+            this.selectedCourse.prec = []
+          } else {
+            this.selectedCourse.prereq = course.prereq
+            this.selectedCourse.prec = course.prec
+          }
         }
       },
       confirm () {

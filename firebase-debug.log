@@ -1,0 +1,22 @@
+[debug] [2018-05-17T18:28:14.356Z] ----------------------------------------------------------------------
+[debug] [2018-05-17T18:28:14.358Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Teama\AppData\Roaming\npm\node_modules\firebase-tools\bin\firebase deploy
+[debug] [2018-05-17T18:28:14.359Z] CLI Version:   3.18.4
+[debug] [2018-05-17T18:28:14.359Z] Platform:      win32
+[debug] [2018-05-17T18:28:14.359Z] Node Version:  v8.11.1
+[debug] [2018-05-17T18:28:14.359Z] Time:          Fri May 18 2018 01:28:14 GMT+0700 (SE Asia Standard Time)
+[debug] [2018-05-17T18:28:14.359Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2018-05-17T18:28:14.372Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-05-17T18:28:14.373Z] > authorizing via signed-in user
+[debug] [2018-05-17T18:28:14.375Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2018-05-17T18:28:14.376Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ { refresh_token: '1/bI7k9wBM5M0Dvhe8TAZBpMDZCfELem8cYoy19iG4zPQ',
+  client_id: '563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com',
+  client_secret: 'j9iVZfS8kkCEFUPaAeJV0sAi',
+  grant_type: 'refresh_token',
+  scope: 'email https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/cloudplatformprojects.readonly https://www.googleapis.com/auth/firebase openid' } 
+ Fri May 18 2018 01:28:14 GMT+0700 (SE Asia Standard Time)
+[debug] [2018-05-17T18:28:14.958Z] <<< HTTP RESPONSE 200
+[debug] [2018-05-17T18:28:15.051Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/skyer-499ee  
+  
+ Fri May 18 2018 01:28:15 GMT+0700 (SE Asia Standard Time)

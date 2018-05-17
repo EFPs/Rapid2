@@ -87,8 +87,7 @@ export const store = new Vuex.Store({
         commit('setLoading', false)
       })
     },
-    autoSignIn ({commit}, payload){
-
+    autoSignIn ({commit}, payload) {
       commit('setUser', payload)
       db.ref('lecturers/' + this.state.user.uid)
           .once('value').then(function (snapshot) {
