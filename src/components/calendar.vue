@@ -40,7 +40,7 @@
               </v-card>
             </v-flex>
 
-              <v-flex  class="my-flex" v-for="index in 7">
+              <v-flex v-on:click.native="" class="my-flex" v-for="index in 7">
                 <v-card dark class="white--text">
                   <v-card-text class="px-0">
                     {{nestedlist[time.id][index-1]}}
@@ -156,19 +156,19 @@
         nestedlist () {
           let temp = [['.', '.', '.', '.', '.', '.', '.'],
             ['.', '.', '.', '.', '.', '.', '.'],
-            ['.', '.', '.', '.', '.', '.', '.'],
+            ['.', 'ICCS202', '.', '.', '.', '.', '.'],
             ['.', '.', '.', '.', '.', '.', '.'],
             ['.', '.', '.', '.', '.', '.', '.'],
             ['.', '.', '.', '.', '.', '.', '.']]
-          for (let i = 0; i < this.fakeData.length; i++) {
-            for (let y = 0; y < this.fakeData[i].time.length; y++) {
-              let temptime = (((parseInt(this.fakeData[i].time[y].substring(0, this.fakeData[i].time[y].indexOf(':')))) - 8) / 2)
-              for (let j = 0; j < this.fakeData[i].day.length; j++) {
-                let dateIndex = this.dateToIndex[this.fakeData[i].day[j]]
-                temp[temptime][dateIndex] = this.fakeData[i].cid
-              }
-            }
-          }
+          // for (let i = 0; i < this.fakeData.length; i++) {
+          //   for (let y = 0; y < this.fakeData[i].time.length; y++) {
+          //     let temptime = (((parseInt(this.fakeData[i].time[y].substring(0, this.fakeData[i].time[y].indexOf(':')))) - 8) / 2)
+          //     for (let j = 0; j < this.fakeData[i].day.length; j++) {
+          //       let dateIndex = this.dateToIndex[this.fakeData[i].day[j]]
+          //       temp[temptime][dateIndex] = this.fakeData[i].cid
+          //     }
+          //   }
+          // }
           return temp
         }
       }

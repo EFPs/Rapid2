@@ -65,7 +65,7 @@
     </v-layout>
 
 
-    <cal :fakeData='this.all'></cal>
+    <cal></cal>
 
   </v-container>
 
@@ -74,7 +74,6 @@
 <script>
   import {auth, db} from '../firebase'
   import cal from './calendar'
-
   export default {
     name: 'Sample',
     components: { cal },
