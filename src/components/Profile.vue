@@ -76,23 +76,22 @@
                 <span class="title" >Personal Info</span>
               </v-card-text>
               <v-card-text>
-                <span class="title">Student ID :   {{ userInfo[4]['.value'] }}</span>
+                <span class="title">Student ID :   {{ userInfo[getIndexUserInfo('sid')]['.value'] }}</span>
               </v-card-text>
               <v-card-text>
-                <span class="title">Major :   {{ userInfo[3]['.value'] }}</span>
+                <span class="title">Major :   {{ userInfo[getIndexUserInfo('major')]['.value'] }}</span>
               </v-card-text>
               <v-card-text>
-                <span class="title">First Name :    {{ userInfo[1]['.value'] }}</span>
+                <span class="title">First Name :    {{ userInfo[getIndexUserInfo('firstName')]['.value'] }}</span>
 
               </v-card-text>
               <v-card-text>
-                <span class="title">Last Name :   {{ userInfo[2]['.value'] }}</span>
+                <span class="title">Last Name :   {{ userInfo[getIndexUserInfo('lastName')]['.value'] }}</span>
               </v-card-text>
               <v-card-text>
                 <span class="title">E-mail :    {{ this.email }}</span>
               </v-card-text>
             </v-card>
-            <v-btn v-on:click.native = 'a'> as</v-btn>
           </v-flex>
         </v-layout>
 
@@ -143,6 +142,7 @@
       }
     },
     beforeUpdate () {
+      // console.log('User',this.userInfo)
       if (this.name === 'none') {
         this.name = this.user.displayName
       }
@@ -183,9 +183,15 @@
       }
     },
     methods: {
-      a () {
-        console.log(this.user)
-        console.log(this.userInfo)
+      getIndexUserInfo (key) {
+        let i = 0
+        for (i = 0; i < this.userInfo.length; i++) {
+          // console.log(this.userInfo[i]['.key'])
+          if (this.userInfo[i]['.key'] === key) {
+            return i
+          }
+        }
+        return -1
       },
       goToSetup () {
         console.log('Go to setup')

@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-layout row wrap>
       <v-flex xs12 class="text-xs-center" mt-5>
-        <h1 style="color: white">Sign Up</h1>
+        <h1 style="color: white">Sign Up As Student</h1>
       </v-flex>
       <v-flex xs12 sm6 offset-sm3 mt-3>
         <form @submit.prevent="userSignUp">
@@ -63,6 +63,7 @@
             </v-flex>
             <v-flex xs6>
               <v-select
+                transition="slide-y-reverse-transition"
                 name="major"
                 :items="majors"
                 v-model="major"

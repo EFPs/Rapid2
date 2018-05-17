@@ -36,7 +36,7 @@
               <template slot="items" slot-scope="props">
                 <td>{{ props.item.cid }}</td>
                 <td class="text-xs-left">{{ props.item.name }}</td>
-                <v-btn v-on:click.native ="addCourses( props.item )">ADD</v-btn>
+                <v-btn v-on:click.native ="()=>{addCourses( props.item )}">ADD</v-btn>
               </template>
 
               <v-alert slot= 'no-results' :value="true" color="error" icon="warning">
@@ -92,7 +92,7 @@
       </v-flex>
     </v-layout>
     <v-layout row wrap>
-      <v-btn block color="success" v-on:click.native="confirm"> CONFIRM </v-btn>
+      <v-btn block color="success" v-on:click.native="confirm"> back to dashboard </v-btn>
     </v-layout>
   </v-container>
 </template>
@@ -150,10 +150,11 @@
       },
       confirm () {
         // console.log('ref', 'users/' + auth.currentUser.uid.toString() + '/takenCourses')
-        console.log('target', this.target)
-        if (window.confirm('Confirm changes? \n(You can come back later)')) {
-          router.push('/home')
-        }
+        // console.log('target', this.target)
+        // if (window.confirm('Confirm changes? \n(You can come back later)')) {
+        //   router.push('/home')
+        // }
+        router.push('/dashboard')
       }
     },
     // Defind new variable

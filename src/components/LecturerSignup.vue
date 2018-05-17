@@ -2,43 +2,52 @@
   <v-container fluid>
     <v-layout row wrap>
       <v-flex xs12 class="text-xs-center" mt-5>
-        <h1>Sign Up</h1>
+        <h1 style="color: white;">Sign Up As Lecturer</h1>
+      </v-flex>
+      <v-flex>
+        <v-alert type="error" dismissible v-model="alert">
+          {{ error }}
+        </v-alert>
       </v-flex>
       <v-flex xs12 sm6 offset-sm3 mt-3>
         <form @submit.prevent="userSignUp">
-          <v-layout column>
+          <v-layout column :style="{'background-color': 'rgba(0,0,0,0.5)', 'border-radius': '15px'}">
             <v-flex>
               <v-alert type="error" dismissible v-model="alert">
                 {{ error }}
               </v-alert>
             </v-flex>
+            <br/>
             <v-flex>
               <v-text-field
+                dark
                 name="email"
                 label="Email"
                 id="email"
                 type="email"
-                color="textBox"
+                color="primary"
                 v-model="email"
                 required></v-text-field>
             </v-flex>
             <v-flex>
               <v-text-field
+                dark
                 name="password"
                 label="Password"
                 id="password"
                 type="password"
-                color="textBox"
+                color="primary"
                 v-model="password"
                 required></v-text-field>
             </v-flex>
             <v-flex>
               <v-text-field
+                dark
                 name="confirmPassword"
                 label="Confirm Password"
                 id="confirmPassword"
                 type="password"
-                color="textBox"
+                color="primary"
                 required
                 v-model="passwordConfirm"
                 :rules="[comparePasswords]"
@@ -46,35 +55,38 @@
             </v-flex>
             <v-flex xs6>
               <v-select
+                dark
                 name="major"
                 :items="majors"
                 v-model="major"
                 label="Select Major"
                 item-text="major"
-                color="textBox"
+                color="primary"
                 autocomplete
                 required
               ></v-select>
             </v-flex>
             <v-flex>
               <v-text-field
+                dark
                 name="firstName"
                 label="First Name"
                 id="firstName"
                 type="text"
                 required
-                color="textBox"
+                color="primary"
                 v-model="firstName"
               ></v-text-field>
             </v-flex>
             <v-flex>
               <v-text-field
+                dark
                 name="lastName"
                 label="Last Name"
                 id="lastName"
                 type="text"
                 required
-                color="textBox"
+                color="primary"
                 v-model="lastName"
               ></v-text-field>
             </v-flex>

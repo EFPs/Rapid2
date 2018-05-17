@@ -1,14 +1,14 @@
 <template>
   <v-container fluid>
-    <v-parallax src="/static/material.jpg">
+    <v-parallax src="/static/tim-gouw-68319-unsplash.jpg">
     <v-layout row wrap>
       <v-flex xs12 text-xs-center mt-5>
-        <h1 class="black">Welcome to Awesome App</h1>
+        <h1 style="background-color: rgba(0,0,0,0.7)">Welcome to Skyer</h1>
       </v-flex>
-      <v-flex xs12 sm6 offset-sm3 mt-3>
+      <v-flex xs12 sm6 offset-sm3 mt-3 style="background-color: rgba(0,0,0,0.4)">
         <blockquote class="blockquote text-xs-center">
-          It's a basic Single Page application <br>
-          with Google Firebase authentication
+          We offer an early course pre-registration for MUIC students <br>
+          Students can also plan courses ahead, with no need to<br> worry about sky-war.<br>
         </blockquote>
       </v-flex>
       <v-flex xs12 sm6 offset-sm3 mt-3 class="text-xs-center" mt-5>

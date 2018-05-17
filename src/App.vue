@@ -90,20 +90,21 @@
       menuItems () {
         if (this.isAuthenticated && !this.isLecturer) {
           return [
-            { title: 'Home', path: '/home', icon: 'home' },
+            { title: 'Home', path: '/', icon: 'home' },
             { title: 'Profile', path: '/profile', icon: 'face' },
-            { title: 'Add Courses', path: '/setup', icon: 'home' }
+            { title: 'Add Taken Courses', path: '/setup', icon: 'home' },
+            { title: 'Dashboard', path: '/dashboard', icon: 'D' }
           ]
         } else if (this.isAuthenticated && this.isLecturer) {
           return [
-            { title: 'Home', path: '/home', icon: 'home' },
-            { title: 'LecturerBoard', path: '/lecturerboard', icon: 'home' },
-            { title: 'Add Courses', path: '/lectureraddcourse', icon: 'home' }
+            { title: 'Home', path: '/', icon: 'home' },
+            { title: 'LecturerBoard', path: '/lb', icon: 'home' },
+            { title: 'Add Courses', path: '/lac', icon: 'home' }
           ]
         } else {
           return [
             { title: 'Sign Up', path: '/signup', icon: 'face' },
-            { title: 'Lecturer Sign Up', path: '/sl', icon: 'face' },
+            { title: 'Lecturer Sign Up', path: '/ls', icon: 'face' },
             { title: 'Sign In', path: '/signin', icon: 'lock_open' }
           ]
         }
